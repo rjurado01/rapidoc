@@ -11,7 +11,7 @@ module Rapidoc
 
   def create_structure
     FileUtils.cp_r GEM_CONFIG_DIR + "/.", config_dir
-    FileUtils.cp_r GEM_ASSETS_DIR, target_dir
+    FileUtils.cp_r GEM_ASSETS_DIR + "/.", target_dir
   end
 
   # Reads 'rake routes' output and gets the controller info
@@ -74,18 +74,18 @@ module Rapidoc
   def get_index_template
     template = IO.read( gem_templates_dir('index.html.hbs') )
     handlebars = Handlebars::Context.new
-	
+
     handlebars.register_helper('method_label') do |this, context, block|
-		  get_method_label( block.call(context) )	
+      get_method_label( block.call(context) )
     end
 
-		handlebars.compile( template )
+    handlebars.compile( template )
   end
 
   def generate_index_templates(resource_docs)
     config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
 
-		template = get_index_template
+    template = get_index_template
     result = template.call( :info => config, :resources => get_resources )
 
     File.open( target_dir("index.html"), 'w' ) { |file| file.write result }

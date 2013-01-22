@@ -1,7 +1,9 @@
+include Rapidoc
+
 namespace :rapidoc do
 
   desc "Generate the api documentation"
-  task :generate do
+  task :generate => :environment do
     create_structure
     resources = get_resources
 
@@ -13,7 +15,7 @@ namespace :rapidoc do
   end
 
   desc "Generate the config files"
-  task :clean do
+  task :clean => :environment do
     remove_structure
   end
 end

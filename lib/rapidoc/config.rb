@@ -16,11 +16,11 @@ module Rapidoc
 
     def target_dir( f = nil )
       @target_dir ||= File.join( ::Rails.root.to_s, 'rapidoc/' )
-      form_file_name @target_dir, f 
+      form_file_name @target_dir, f
     end
 
     def controller_dir(f = nil)
-      @controller_dir ||= File.join( ::Rails.root.to_s, 'app/controllers/' )
+      @controller_dir ||= File.join( ::Rails.root.to_s, 'app/controllers' )
       form_file_name @controller_dir, f
     end
 

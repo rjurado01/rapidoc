@@ -33,14 +33,14 @@
           </div>
         </div>
       </div>
-      
+
       <div class="container">
       <div class="page-header">
         <h1>Resources</h1>
       </div>
       <div class="accordion" id="accordion2">
-				
-				{{#each resources}}
+
+      {{#each resources}}
         <div class="accordion-group">
           <div class="accordion-heading">
             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{this.name}}">
@@ -51,23 +51,23 @@
             <div class="accordion-inner">
               Identifica al usuario en el sistema e inicia una sessión para ese usuario.</br></br>
               <table class="table table-hover">
-								{{#each this.resource_methods}}
+              {{#each this.resource_methods}}
                 <tr>
-									<td class="routes"><span class="{{#method_label this}}{{method}}{{/method_label}}">
-										{{this.method}}</span>
-									</td>
-									<td>
-										{{this.url}}
-									</td>
-								</tr>
+                  <td class="routes"><span class="{{#method_label this}}{{method}}{{/method_label}}">
+                    {{this.method}}</span>
+                  </td>
+                  <td>
+                    {{this.url}}
+                  </td>
+                </tr>
                 {{/each}}
               </table>
             </div>
           </div>
         </div>
         {{/each}}
-        
-			</div>
+
+      </div>
       <footer>
         <p>NSS Network; Company 2012</p>
       </footer>

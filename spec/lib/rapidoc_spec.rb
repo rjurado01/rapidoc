@@ -1,8 +1,4 @@
-require 'rapidoc'
-
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../dummy/config/environment", __FILE__)
-require 'rspec/rails'
+require "spec_helper"
 
 include Rapidoc
 include Rapidoc::Config
@@ -80,13 +76,13 @@ describe Rapidoc do
   end
 
   context "when executing genarate_doc function" do
-    before do	
+    before do
       create_structure
       generate_doc( get_resources )
     end
 
     after do
-      'rm -r #{::Rails.root.to_s} + "/rapidoc'
+      `rm -r #{::Rails.root.to_s + "/rapidoc"}`
     end
 
     it "should create new index.html file" do
