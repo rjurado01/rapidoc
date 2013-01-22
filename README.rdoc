@@ -1,0 +1,40 @@
+= Rapidoc {<img src="https://secure.travis-ci.org/Pajk/apipie-rails.png?branch=master" alt="Build Status" />}[http://travis-ci.org/Pajk/apipie-rails]
+
+Generates REST API documentation.
+
+This gem creates new directory called 'rapidoc' with static html files.
+This files contain API documentation that is generated using 'routes.rb' and 'controllers' files.  
+
+This is how the web interface look like: http://www.v2imagen.com/RDv 
+
+Rapidoc is based in restapi_doc gem: https://github.com/Alayho/restapi_doc
+
+== Installation
+
+Download project
+
+    $ git clone <repo>
+
+Go to directory and install gem
+
+    $ rake install
+
+Add this line to your application's Gemfile:
+
+    gem 'rapidoc'
+
+And then execute:
+
+    $ bundle
+
+== Usage
+
+    rake rapidoc:generate
+
+== Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
