@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Rapidoc</title>
+    <meta name="description" content="Artículo en GenbetaDev sobre Bootstrap 2.0">
+    <meta name="author" content="Rafael Jurado González" >
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/rapidoc.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="assets/js/jquery-1.9.0.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <style>
+      body { padding-top: 60px; }
+    </style>
+  </head>
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">{{info.project_name}}</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Resources</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="container">
+      <div class="page-header">
+        <h1>Resources</h1>
+      </div>
+      <div class="accordion" id="accordion2">
+				
+				{{#each resources}}
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{this.name}}">
+              <strong>/ {{this.name}}</strong>
+            </a>
+          </div>
+          <div id="collapse{{this.name}}" class="accordion-body collapse">
+            <div class="accordion-inner">
+              Identifica al usuario en el sistema e inicia una sessión para ese usuario.</br></br>
+              <table class="table table-hover">
+								{{#each this.resource_methods}}
+                <tr>
+									<td class="routes"><span class="{{#method_label this}}{{method}}{{/method_label}}">
+										{{this.method}}</span>
+									</td>
+									<td>
+										{{this.url}}
+									</td>
+								</tr>
+                {{/each}}
+              </table>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+        
+			</div>
+      <footer>
+        <p>NSS Network; Company 2012</p>
+      </footer>
+    </div>
+  </body>
+</html>
