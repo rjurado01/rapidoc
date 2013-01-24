@@ -4,7 +4,7 @@ include Rapidoc::Config
 
 describe Rapidoc::Config do
   it "target_dir return correct dir" do
-    target_dir().should eql( ::Rails.root.to_s + '/rapidoc/' )
+    target_dir().should eql( ::Rails.root.to_s + '/rapidoc' )
   end
 
   it "target_dir return correct dir + file" do

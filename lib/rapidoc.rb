@@ -1,17 +1,15 @@
 require 'handlebars'
 require "rapidoc/config"
 require "rapidoc/version"
+require "tasks/railtie.rb"
 require "rapidoc/resource_doc"
+require "rapidoc/controller_extractor"
+require "rapidoc/resources_extractor"
 
 module Rapidoc
 
-  class Railtie < Rails::Railtie
-    rake_tasks do
-      load "tasks/rapidoc.rake"
-    end
-  end
-
   include Config
+  include ResourcesExtractor
 
   METHODS = [ "GET", "PUT", "DELETE", "POST" ]
 
@@ -23,43 +21,6 @@ module Rapidoc
 
   def remove_structure
     FileUtils.rm_r target_dir
-  end
-
-  # Reads 'rake routes' output and gets the controller info
-  def get_controller_info
-    controller_info = {}
-    routes = Dir.chdir( ::Rails.root.to_s ) { `rake routes` }
-
-    routes.split("\n").each do |entry|
-      begin
-        if entry.split.size == 4
-          method, url, controller_action = entry.split.slice(1, 3)
-        else
-           method, url, controller_action = entry.split
-        end
-
-        if METHODS.include? method.upcase
-          controller, action = controller_action.split('#')
-          controller_info[controller] ||= []
-          controller_info[controller] << { :action => action, :method => method,  :url => url }
-        end
-      rescue
-      end
-    end
-
-    controller_info
-  end
-
-  def get_resources
-    controller_info = get_controller_info
-    resources = []
-
-    controller_info.each do |controller, action_entries|
-      controller_location = controller_dir(controller + '_controller.rb')
-      resources << ResourceDoc.new(controller, action_entries, controller_location)
-    end
-
-    resources
   end
 
   def generate_doc(resource_docs)
@@ -93,12 +54,13 @@ module Rapidoc
     handlebars.compile( template )
   end
 
-  def generate_index_templates(resource_docs)
+  def generate_index_templates( resource_docs )
     config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
 
     template = get_index_template
-    result = template.call( :info => config, :resources => get_resources )
+    result = template.call( :info => config, :resources => resource_docs )
 
     File.open( target_dir("index.html"), 'w' ) { |file| file.write result }
   end
+
 end
