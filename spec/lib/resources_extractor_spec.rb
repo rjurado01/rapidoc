@@ -58,6 +58,11 @@ describe Rapidoc::ResourcesExtractor do
       resource_methods = @resources.last.resource_methods
       resource_methods.should ==  get_resources_info[ @resources.last.name ]
     end
+
+    it "return correct order" do
+      names = @resources.map(&:name)
+      names.should == ["albums","images","users"]
+    end
   end
 end
 
