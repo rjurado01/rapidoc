@@ -27,7 +27,7 @@ module Rapidoc
           if METHODS.include? method.upcase
             resource, action = controller_action.split('#')
             resource_info[resource] ||= []
-            resource_info[resource] << { :action => action, :method => method,  :url => url }
+            resource_info[resource] << { "action" => action, "method" => method,  "url" => url }
           end
         rescue
         end
@@ -41,7 +41,7 @@ module Rapidoc
       resources = []
 
       resources_info.each do |resource, action_entries|
-        resources << ResourceDoc.new( resource, action_entries, resource + '_controller.rb' )
+        resources << ResourceDoc.new( resource, action_entries )
       end
 
       resources

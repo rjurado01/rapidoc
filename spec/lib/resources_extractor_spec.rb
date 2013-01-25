@@ -7,6 +7,7 @@ describe Rapidoc::ResourcesExtractor do
   context "when executing get_resources_info function" do
     before do
       @resources_info = get_resources_info
+      pp @resources_info
     end
 
     it "return correct resources" do
@@ -41,6 +42,7 @@ describe Rapidoc::ResourcesExtractor do
     end
 
     it "return correct resorces name" do
+      pp @resources
       names = @resources.map(&:name)
       names.should be_include( "images" )
       names.should be_include( "users" )

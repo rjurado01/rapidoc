@@ -31,7 +31,7 @@ module Rapidoc
       @blocks.each.map do |b|
         if @lines[ b[:init] ].include? "=begin action"
           n_lines = b[:end] - b[:init] - 1
-          info.push YAML.load( @lines[ b[:init] +1, n_lines ].join.gsub(/\ *#/, '') )
+          info << YAML.load( @lines[ b[:init] +1, n_lines ].join.gsub(/\ *#/, '') )
         end
       end
 

@@ -3,6 +3,7 @@ require "rapidoc/config"
 require "rapidoc/version"
 require "tasks/railtie.rb"
 require "rapidoc/resource_doc"
+require "rapidoc/action_doc"
 require "rapidoc/controller_extractor"
 require "rapidoc/resources_extractor"
 
