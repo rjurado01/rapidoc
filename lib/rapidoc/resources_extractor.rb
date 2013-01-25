@@ -37,7 +37,7 @@ module Rapidoc
     end
 
     def get_resources
-      resources_info = get_resources_info
+      resources_info = get_resources_info.sort
       resources = []
 
       resources_info.each do |resource, action_entries|
