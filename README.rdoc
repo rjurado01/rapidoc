@@ -1,4 +1,4 @@
-= Rapidoc {<img src="https://secure.travis-ci.org/Pajk/apipie-rails.png?branch=master" alt="Build Status" />}[http://travis-ci.org/Pajk/apipie-rails]
+= Rapidoc
 
 REST API documentation generator for rails projects.
 
