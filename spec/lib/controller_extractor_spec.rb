@@ -10,7 +10,6 @@ describe ControllerExtractor do
   context "when extract actions info from a controller" do
     before do
       @info = @extractor.get_actions_info
-      pp @info
     end
 
     it "should return info about all commented actions" do

@@ -27,7 +27,8 @@ module Rapidoc
           if METHODS.include? method.upcase
             resource, action = controller_action.split('#')
             resource_info[resource] ||= []
-            resource_info[resource] << { "action" => action, "method" => method,  "url" => url }
+            resource_info[resource] << { :resource => resource, :action => action,
+              :method => method,  :url => url }
           end
         rescue
         end
@@ -41,11 +42,23 @@ module Rapidoc
       resources = []
 
       resources_info.each do |resource, action_entries|
-        resources << ResourceDoc.new( resource, action_entries )
+        resources << ResourceDoc.new( resource, order_actions( action_entries ) )
       end
 
       resources
     end
 
+    def order_actions actions
+      if actions
+        methods = actions.map{ |action| action[:method] }.uniq
+        info =[]
+
+        methods.each do |method|
+          actions.each{ |action| info << action if action[:method] == method }
+        end
+
+        return info
+      end
+    end
   end
 end

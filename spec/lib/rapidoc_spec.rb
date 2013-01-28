@@ -23,13 +23,33 @@ describe Rapidoc do
       generate_doc( get_resources )
     end
 
-    after do
-      `rm -r #{::Rails.root.to_s + "/rapidoc"}`
-    end
+#    after do
+#      `rm -r #{::Rails.root.to_s + "/rapidoc"}`
+#    end
 
     it "should create new index.html file" do
       File.exists?( ::Rails.root.to_s + "/rapidoc/index.html" ).should == true
     end
   end
 
+  context "when executing generate_action_template function" do
+    before do
+      create_structure
+
+      info = {
+        "action" => "index",
+        "method" => "GET",
+        "urls" => "",
+        "description" => "example"
+      }
+
+      #action = ActionDoc.new info
+      action = ActionDoc.new( info )
+      generate_action_template action
+    end
+
+    it "should create new action.html file"do
+       File.exists?( ::Rails.root.to_s + "/rapidoc/action.html" ).should == true
+    end
+  end
 end
