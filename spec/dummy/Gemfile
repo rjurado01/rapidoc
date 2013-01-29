@@ -8,6 +8,9 @@ gem 'rails', '3.2.11'
 gem 'sqlite3'
 gem 'execjs'
 gem 'therubyracer'
+gem 'yard'
+gem 'rapidoc'
+gem 'handlebars'
 
 
 # Gems used only for assets and not required

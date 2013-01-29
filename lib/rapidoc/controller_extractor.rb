@@ -1,8 +1,8 @@
 module Rapidoc
 
   ##
-  # This class open controller file and get all documentation block.
-  # Lets user to check if any of this blocks is a `rapidoc` block
+  # This class open controller file and get all documentation blocks.
+  # Lets us check if any of this blocks is a `rapidoc` block
   # and return it using `json` format.
   #
   # Rapidoc blocks must:
@@ -25,21 +25,30 @@ module Rapidoc
       end
     end
 
+    ##
+    # Check all blocks and load those that are 'rapidoc actions block'
+    # @return [Array] all actions info
+    #
     def get_actions_info
       info = []
+      @blocks = [] unless @blocks
 
-      @blocks.each.map do |b|
-        if @lines[ b[:init] ].include? "=begin action"
-          n_lines = b[:end] - b[:init] - 1
-          info.push YAML.load( @lines[ b[:init] +1, n_lines ].join.gsub(/\ *#/, '') )
+      @blocks.each do |block|
+        if @lines[ block[:init] ].include? "=begin action"
+          n_lines = block[:end] - block[:init] - 1
+          info << YAML.load( @lines[ block[:init] + 1, n_lines ].join.gsub(/\ *#/, '') )
         end
       end
 
       return info
     end
 
+    ##
+    # Check if exist a block with resource information 'rapidoc resource block'
+    # @return [Hash] resource info
+    #
     def get_resource_info
-      info = []
+      @blocks ? info = [] : @blocks = []
 
       @blocks.each.map do |b|
         if @lines[ b[:init] ].include? "=begin resource"
@@ -52,7 +61,7 @@ module Rapidoc
     end
 
     def get_controller_info
-      { "description" => get_resource_info, "actions" => get_actions_info }
+      { "description" => get_resource_info["description"], "actions" => get_actions_info }
     end
 
   end

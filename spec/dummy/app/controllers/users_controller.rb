@@ -11,7 +11,7 @@ class AlbumsController < ApplicationController
   # action: index
   # requires_authentication: no
   # response_format: json
-  # description: example description
+  # description: Return all users of the system.
   # http_responses:
   #   - 200
   #   - 401
@@ -25,7 +25,7 @@ class AlbumsController < ApplicationController
   # action: show
   # requires_authentication: no
   # response_format: json
-  # description: example description
+  # description: Return an user.
   # http_responses:
   #   - 200
   #   - 401
@@ -39,7 +39,7 @@ class AlbumsController < ApplicationController
   # action: create
   # requires_authentication: yes
   # response_format: json
-  # description: example description
+  # description: Create new user.
   # params:
   #   - name: Name
   #     type: string
