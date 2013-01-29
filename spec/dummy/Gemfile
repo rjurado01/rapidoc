@@ -9,6 +9,8 @@ gem 'sqlite3'
 gem 'execjs'
 gem 'therubyracer'
 gem 'yard'
+gem 'rapidoc'
+gem 'handlebars'
 
 
 # Gems used only for assets and not required

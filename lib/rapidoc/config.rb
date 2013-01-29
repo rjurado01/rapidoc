@@ -1,5 +1,10 @@
 # encoding: utf-8
+
 module Rapidoc
+
+  ##
+  # This module has all config information about directories and config files.
+  #
   module Config
     GEM_CONFIG_DIR = File.join( File.dirname(__FILE__), 'config' )
     GEM_ASSETS_DIR = File.join( File.dirname(__FILE__), 'templates/assets' )

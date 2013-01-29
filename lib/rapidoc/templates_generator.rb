@@ -42,15 +42,18 @@ module Rapidoc
     end
 
     def generate_actions_templates( resources_doc )
-      template = get_action_template
-
       resources_doc.each do |resource|
-        resource.actions_info.each do |action_doc|
-          result = template.call( :action => action_doc )
-          File.open( target_dir("#{action_doc.file}.html"), 'w' ) {
-            |file| file.write result }
+        if resource.actions_doc
+          resource.actions_doc.each do |action_doc|
+            create_action_template( get_action_template, action_doc )
+          end
         end
       end
+    end
+
+    def create_action_template( template, action_doc )
+      result = template.call( :action => action_doc )
+      File.open( target_dir("#{action_doc.file}.html"), 'w' ) { |file| file.write result }
     end
 
     def get_action_template

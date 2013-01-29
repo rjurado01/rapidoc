@@ -26,8 +26,8 @@ module Rapidoc
 
           if METHODS.include? method.upcase
             resource, action = controller_action.split('#')
-            resource_info[resource] ||= []
-            resource_info[resource] << { :resource => resource, :action => action,
+            resource_info[resource.to_sym] ||= []
+            resource_info[resource.to_sym] << { :resource => resource, :action => action,
               :method => method,  :url => url }
           end
         rescue
