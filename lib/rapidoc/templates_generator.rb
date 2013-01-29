@@ -52,7 +52,9 @@ module Rapidoc
     end
 
     def create_action_template( template, action_doc )
-      result = template.call( :action => action_doc )
+      config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
+      result = template.call( :info => config, :action => action_doc )
+
       File.open( target_dir("#{action_doc.file}.html"), 'w' ) { |file| file.write result }
     end
 

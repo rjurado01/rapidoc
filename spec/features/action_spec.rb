@@ -8,15 +8,25 @@ Capybara.app = Rack::File.new ::Rails.root.to_s
 include Rapidoc
 
 describe "Action page" do
-  
+
+  before :all do
+    create_structure
+    generate_doc get_resources
+  end
+
+  after :all do
+    `rm -r #{ ::Rails.root.to_s + '/rapidoc' }`
+  end
+
   before do
     visit '/rapidoc/users_index.html'
-    @user_resource = get_resources.select{ |r| r.name == "users" }.first
+    @user_resource = get_resources.select{ |r| r.name == :users }.first
   end
 
   context "when check action page" do
     it "contains title with text 'Project'" do
-      page.should have_link('Project Name', '#')
+      config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
+      page.should have_link( config["project_name"], '#' )
     end
 
     it "contains an H1 with text 'user'" do
@@ -26,7 +36,7 @@ describe "Action page" do
 
   context "when check tab 'Home'" do
     before do
-      @action_info = @user_resource.actions_info.first
+      @action_info = @user_resource.actions_doc.first
     end
 
     it "contains a description of the resource" do

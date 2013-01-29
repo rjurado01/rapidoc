@@ -9,8 +9,17 @@ include Rapidoc
 
 describe "Index page" do
 
+  before :all do
+    create_structure
+    generate_doc get_resources
+  end
+
   before do
     visit '/rapidoc/index.html'
+  end
+
+  after :all do
+    `rm -r #{ ::Rails.root.to_s + '/rapidoc' }`
   end
 
   context "when check global page" do
@@ -36,7 +45,7 @@ describe "Index page" do
 
     it "contains the correct methods" do
       @resources.each do |resource|
-        resource.actions.each do |action|
+        resource.routes_info.each do |action|
           href = ( resource.name.to_s + "_" + action[:action] + ".html" ).to_s
           page.should have_link( action[:url], href: href )
         end
