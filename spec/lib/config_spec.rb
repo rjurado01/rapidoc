@@ -1,21 +1,8 @@
 require "spec_helper"
 
-include Rapidoc::Config
+include Rapidoc
 
 describe Rapidoc::Config do
-  context "check get_route" do
-    before do
-      File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "route: \"vim\"" }
-    end
-
-    it "target_dir return correct dir" do
-      target_dir().should eql( get_route )
-    end
-
-    it "target_dir return correct dir + file" do
-      target_dir('file.html').should eql( get_route + '/file.html' )
-    end
-  end
 
   it "config_dir return correct dir" do
     config_dir().should eql( ::Rails.root.to_s + '/config/rapidoc' )
@@ -41,14 +28,28 @@ describe Rapidoc::Config do
     gem_templates_dir('template.hbs').should  =~ /(.*)\/templates\/template\.hbs/
   end
 
-  context "when call get_route" do
+  context "check target_dir" do
+    before do
+      File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "route: \"vim\"" }
+    end
+
+    it "target_dir return correct dir" do
+      target_dir().should eql( target_dir )
+    end
+
+    it "target_dir return correct dir + file" do
+      target_dir('file.html').should eql( target_dir + '/file.html' )
+    end
+  end
+
+  context "when call target_dir" do
     context "when config file has a route" do
       before do
         File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "route: \"vim\"" }
       end
 
-      it "get_route return correct route" do
-        get_route.should ==  ::Rails.root.to_s + "/vim"
+      it "target_dir return correct route" do
+        target_dir.should ==  ::Rails.root.to_s + "/vim"
       end
     end
 
@@ -57,8 +58,8 @@ describe Rapidoc::Config do
         File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }
       end
 
-      it "get_route return incorrect route" do
-        get_route.should == ::Rails.root.to_s + "/rapidoc"
+      it "target_dir return incorrect route" do
+        target_dir.should == ::Rails.root.to_s + "/rapidoc"
       end
     end
   end

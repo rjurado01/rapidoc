@@ -19,7 +19,7 @@ describe "Index page" do
   end
 
   after :all do
-    `rm -r #{ get_route }`
+    `rm -r #{ target_dir }`
   end
 
   context "when check global page" do

@@ -20,7 +20,7 @@ module Rapidoc
     end
 
     def target_dir( f = nil )
-      @target_dir ||= File.join( get_route )
+      @target_dir ||= File.join( ::Rails.root.to_s, target_relative_dir )
       form_file_name @target_dir, f
     end
 
@@ -37,11 +37,10 @@ module Rapidoc
       end
     end
 
-    def get_route
+    def target_relative_dir
+      return "rapidoc" unless File.exists?("#{config_dir}/rapidoc.yml")
       config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
-      route = ::Rails.root.to_s + '/'
-      route << ( ( not config or not config.has_key?("route") )  ? "rapidoc" : config["route"] )
-      route
+      ( not config or not config.has_key?("route") )  ? "rapidoc" : config["route"]
     end
   end
 end

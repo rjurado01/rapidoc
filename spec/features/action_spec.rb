@@ -15,7 +15,7 @@ describe "Action page" do
   end
 
   after :all do
-    `rm -r #{ get_route }`
+    `rm -r #{ target_dir }`
   end
 
   before do

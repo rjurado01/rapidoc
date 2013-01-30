@@ -9,13 +9,13 @@ describe TemplatesGenerator do
   end
 
   after do
-    `rm -r #{ get_route}`
+    `rm -r #{ target_dir }`
   end
 
   context "when call generate_index_template" do
     it "should create new index.html file" do
       generate_index_template nil
-      File.exists?( get_route + '/index.html' ).should == true
+      File.exists?( target_dir + '/index.html' ).should == true
     end
   end
 
@@ -35,7 +35,7 @@ describe TemplatesGenerator do
     it "should create new action.html file for each action"do
       @resources.each do |resource|
         resource.actions_doc.each do |action_doc|
-          route = get_route + "/#{resource.name}_#{action_doc.action}.html"
+          route = target_dir + "/#{resource.name}_#{action_doc.action}.html"
           File.exists?( route ).should == true
         end
       end
@@ -50,7 +50,7 @@ describe TemplatesGenerator do
     end
 
     it "should create new action html file" do
-      route = get_route + "/#{@resource_name}_#{@info["action"]}.html"
+      route = target_dir + "/#{@resource_name}_#{@info["action"]}.html"
       File.exists?( route ).should == true
     end
   end
