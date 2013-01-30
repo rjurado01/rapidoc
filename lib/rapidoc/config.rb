@@ -20,7 +20,7 @@ module Rapidoc
     end
 
     def target_dir( f = nil )
-      @target_dir ||= File.join( ::Rails.root.to_s, 'rapidoc' )
+      @target_dir ||= File.join( get_route )
       form_file_name @target_dir, f
     end
 
@@ -35,6 +35,13 @@ module Rapidoc
       when String then File.join(dir, file)
       else raise ArgumentError, "Invalid argument #{file}"
       end
+    end
+
+    def get_route
+      config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
+      route = ::Rails.root.to_s + '/'
+      route << ( ( not config or not config.has_key?("route") )  ? "rapidoc" : config["route"] )
+      route
     end
   end
 end

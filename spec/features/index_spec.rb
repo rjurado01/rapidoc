@@ -10,7 +10,7 @@ include Rapidoc
 describe "Index page" do
 
   before :all do
-    create_structure
+    reset_structure
     generate_doc get_resources
   end
 
@@ -19,7 +19,7 @@ describe "Index page" do
   end
 
   after :all do
-    `rm -r #{ ::Rails.root.to_s + '/rapidoc' }`
+    `rm -r #{ get_route }`
   end
 
   context "when check global page" do

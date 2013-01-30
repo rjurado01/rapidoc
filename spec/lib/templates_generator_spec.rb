@@ -9,13 +9,13 @@ describe TemplatesGenerator do
   end
 
   after do
-    `rm -r #{ ::Rails.root.to_s }/rapidoc`
+    `rm -r #{ get_route}`
   end
 
   context "when call generate_index_template" do
     it "should create new index.html file" do
       generate_index_template nil
-      File.exists?( ::Rails.root.to_s + '/rapidoc/index.html' ).should == true
+      File.exists?( get_route + '/index.html' ).should == true
     end
   end
 
@@ -35,8 +35,8 @@ describe TemplatesGenerator do
     it "should create new action.html file for each action"do
       @resources.each do |resource|
         resource.actions_doc.each do |action_doc|
-          route = "/rapidoc/#{resource.name}_#{action_doc.action}.html"
-          File.exists?( ::Rails.root.to_s + route ).should == true
+          route = get_route + "/#{resource.name}_#{action_doc.action}.html"
+          File.exists?( route ).should == true
         end
       end
     end
@@ -50,8 +50,8 @@ describe TemplatesGenerator do
     end
 
     it "should create new action html file" do
-      route = "/rapidoc/#{@resource_name}_#{@info["action"]}.html"
-      File.exists?( ::Rails.root.to_s + route ).should == true
+      route = get_route + "/#{@resource_name}_#{@info["action"]}.html"
+      File.exists?( route ).should == true
     end
   end
 
