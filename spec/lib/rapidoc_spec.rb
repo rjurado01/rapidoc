@@ -20,6 +20,10 @@ describe Rapidoc do
     it "should create target dir" do
       File.directory?( target_dir ).should == true
     end
+
+    it "should create example dir" do
+      File.directory?( get_examples_dir ).should == true
+    end
   end
 
   context "when executing genarate_doc function" do

@@ -1,4 +1,4 @@
-class AlbumsController < ApplicationController
+class UsersController < ApplicationController
 
   # =begin resource
   # description: Represents an user in the system.
@@ -18,6 +18,8 @@ class AlbumsController < ApplicationController
   #   - 403
   # =end
   def index
+    @data_json = { "name" => "Antonio", "apellido" => "Jimenez" }
+    render :json => @data_json
   end
 
   # =begin action

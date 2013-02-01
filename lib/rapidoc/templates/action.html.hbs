@@ -10,11 +10,12 @@
     <link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
     <script src="assets/js/jquery-1.9.0.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/json2.js"></script>
     <style>
       body { padding-top: 60px; }
     </style>
   </head>
-  <body>
+  <body onload="prueba()">
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -82,31 +83,11 @@
         </div>
 
         <div class="tab-pane my_tab" id="messages">
-          <pre>Petición</pre>
+          <pre>{{action.example_req }}</pre>
         </div>
 
         <div class="tab-pane my_tab" id="settings">
-          <pre>
-  {
-    "album": {
-      "_links": {
-          "self": "/albums/509778c2421aa90e0b000018",
-          "owner": "/users/50977891421aa90e0b000003",
-          "images": "/albums/509778c2421aa90e0b000018/images",
-          "cover": "/albums/509778c2421aa90e0b000018/images/509778c2421aa90e0b00001d"
-      },
-      "_id": "509778c2421aa90e0b000018",
-      "id": "/albums/509778c2421aa90e0b000018",
-      "title": "album #2",
-      "description": "fucking album",
-      "emotion": "happy",
-      "privacy": "family",
-      "date": "1465-10-16T16:14:44Z",
-      "location": null,
-      "views": 1,
-    }
-  }
-          </pre>
+          <pre>{{action.example_res }}</pre>
         </div>
       </div>
 

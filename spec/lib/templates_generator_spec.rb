@@ -46,7 +46,8 @@ describe TemplatesGenerator do
     before do
       @resource_name = "users"
       @info = { "action" => "index", "method" => "GET", "description" => "example" }
-      create_action_template( get_action_template, ActionDoc.new( @resource_name, @info, nil ) )
+      @urls = [ "/url1", "/url2" ]
+      create_action_template( get_action_template, ActionDoc.new( @resource_name, @info, @urls) )
     end
 
     it "should create new action html file" do
