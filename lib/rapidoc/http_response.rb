@@ -23,7 +23,7 @@ module Rapidoc
         when 201
           'Unauthorized'
         when 401
-          'Not foun'
+          'Not found'
         when 422
           'Unprocessable Entity'
         when 403

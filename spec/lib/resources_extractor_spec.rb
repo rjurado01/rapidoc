@@ -42,9 +42,9 @@ describe Rapidoc::ResourcesExtractor do
 
     it "return correct resorces name" do
       names = @resources.map(&:name)
-      names.should be_include( :images )
-      names.should be_include( :users )
-      names.should be_include( :albums )
+      names.should be_include( "images" )
+      names.should be_include( "users" )
+      names.should be_include( "albums" )
     end
 
     it "return correct controller_names" do
@@ -55,7 +55,7 @@ describe Rapidoc::ResourcesExtractor do
     end
 
     it "return correct resource actions" do
-      @user_resource = @resources.select{ |r| r.name == :users }.first
+      @user_resource = @resources.select{ |r| r.name == "users" }.first
       actions = @user_resource.actions_doc.map{ |r| r.action }
 
       actions.should be_include( 'index' )
@@ -65,12 +65,12 @@ describe Rapidoc::ResourcesExtractor do
 
     it "return correct order" do
       names = @resources.map(&:name)
-      names.should == [ :albums, :images, :users ]
+      names.should == [ "albums", "images", "users" ]
     end
 
     context "when check resource with controller" do
       before do
-        @user_resource = @resources.select{ |r| r.name == :users }.first
+        @user_resource = @resources.select{ |r| r.name == "users" }.first
       end
 
       it "return correct info about controller actions" do
@@ -82,4 +82,3 @@ describe Rapidoc::ResourcesExtractor do
     end
   end
 end
-

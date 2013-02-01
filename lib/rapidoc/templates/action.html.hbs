@@ -44,20 +44,21 @@
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home">Home</a></li>
         <li><a href="#profile">Params</a></li>
+        <li><a href="#errors">Errors</a></li>
         <li><a href="#messages">Petition</a></li>
         <li><a href="#settings">Answer</a></li>
       </ul>
 
       <div class="tab-content">
         <div class="tab-pane active my_tab" id="home">
-          <p> 
-            {{action.description}}  
+          <p>
+            {{action.description}}
           </p>
 
            <h4 class="pad_top">Resource URL</h4>
            <pre>{{action.urls}}</pre>
 
-          <h4 class="pad_top">Estados</h4>
+          <h4 class="pad_top">Response Status</h4>
           <table class="table table-hover">
             {{#each action.http_responses}}
             <tr>
@@ -69,15 +70,37 @@
         </div>
 
         <div class="tab-pane my_tab" id="profile">
-          <table class="table table-hover">
+          <table class="table table-hover" id="table-params">
+            {{#each action.params}}
+              <tr>
+                <td>
+                  <strong>{{this.name}}</strong></br>
+                  {{#if this.required}}
+                    <span class="small">required</span>
+                  {{else}}
+                    <span class="small">optional</span>
+                  {{/if}}
+                </td>
+                <td>{{this.description}}</td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
+
+        <div class="tab-pane my_tab" id="errors">
+          <table class="table table-hover table-bordered" id="table-errors">
             <tr>
-              <td class="routes"><strong>limit</strong></br><span class="small">opcional</span></td>
-              <td>Al utilizar este parámetro se aplicará paginación al resultado obtenido.
-                Este parámetro define el número de resultados que se muestran en cada página.
-                Un valor de 0 devuelve todos los álbumes pertenecientes a esa búsqueda.</td>
+              <th>Object</th>
+              <th>Message</th>
+              <th>Description</th>
             </tr>
-            <tr><td>page</td><td>Unauthorized</td></tr>
-            <tr><td>order_by</td><td>Not found</td></tr>
+            {{#each action.errors}}
+              <tr>
+                <td>{{this.object}}</td>
+                <td>{{this.message}}</td>
+                <td>{{this.description}}</td>
+              </tr>
+            {{/each}}
           </table>
         </div>
 
@@ -86,27 +109,7 @@
         </div>
 
         <div class="tab-pane my_tab" id="settings">
-          <pre>
-  {
-    "album": {
-      "_links": {
-          "self": "/albums/509778c2421aa90e0b000018",
-          "owner": "/users/50977891421aa90e0b000003",
-          "images": "/albums/509778c2421aa90e0b000018/images",
-          "cover": "/albums/509778c2421aa90e0b000018/images/509778c2421aa90e0b00001d"
-      },
-      "_id": "509778c2421aa90e0b000018",
-      "id": "/albums/509778c2421aa90e0b000018",
-      "title": "album #2",
-      "description": "fucking album",
-      "emotion": "happy",
-      "privacy": "family",
-      "date": "1465-10-16T16:14:44Z",
-      "location": null,
-      "views": 1,
-    }
-  }
-          </pre>
+          <pre>Answer</pre>
         </div>
       </div>
 

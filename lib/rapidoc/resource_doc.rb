@@ -17,7 +17,7 @@ module Rapidoc
     #   { :action => 'action', :resource => 'resource', :method => 'method', :url => 'url' }
     #
     def initialize( name, routes_info )
-      @name = name
+      @name = name.to_s
       @controller_file = name.to_s + '_controller.rb'
       @routes_info = routes_info
 

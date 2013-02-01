@@ -6,7 +6,7 @@ describe ActionDoc do
 
   before :all do
     extractor = ControllerExtractor.new "users_controller.rb"
-    @resource = :users
+    @resource = "users"
     @urls = [ "/url1", "/url2" ]
     @info = extractor.get_actions_info.first
     @action_doc = ActionDoc.new @resource, @info, @urls
@@ -73,6 +73,45 @@ describe ActionDoc do
 
     it "each HttpResponse element should include label" do
       @http_responses.each{ |http_r| http_r.methods.should be_include( :label ) }
+    end
+  end
+
+  context "when checking errors" do
+    context "when action has custom errors" do
+      before :all do
+        resource = get_resources.select{ |r| r.name == "users" }.first
+        action_doc = resource.actions_doc.select{ |ad| ad.action == "create" }.first
+        @errors = action_doc.errors
+      end
+
+      it "should return all errors" do
+        @errors.size.should == 5
+      end
+
+      it "should return password errors" do
+        params_errors = @errors.select{ |error| error["object"] == 'password' }
+        messages = params_errors.map{ |m| m["message"] }
+        messages.should be_include( 'blank' )
+        messages.should be_include( 'too_short' )
+      end
+
+      it "should return job include error" do
+        params_errors = @errors.select{ |error| error["object"] == 'job' }
+        messages = params_errors.map{ |m| m["message"] }
+        messages.should be_include( 'inclusion' )
+      end
+    end
+
+    context "when action hasn't custom errors" do
+      before :all do
+        resource = get_resources.select{ |r| r.name == "users" }.first
+        action_doc = resource.actions_doc.select{ |ad| ad.action == "show" }.first
+        @errors = action_doc.errors
+      end
+
+      it "should return all errors" do
+        @errors.size.should == 1
+      end
     end
   end
 end
