@@ -37,6 +37,58 @@ For clean all generate files run:
 
     rake rapidoc:clean
 
+== Introducction
+
+If you generate documentation without do anithing, you can get all resources list in a _index.html_ file.
+
+For get resources documentation you need add a resource block to resource controller:
+
+  # =begin resource
+  # =end
+
+For get action documentation you need add an action block to resource controller:
+
+  # =begin action
+  # =end
+
+Documentation blocks use *yaml* format.
+
+== Examples
+
+Resource documentation:
+
+  # =begin resource
+  # description: Represents an user in the system.
+  # =end
+
+Action documentation:
+
+  # =begin action
+  # method: GET
+  # action: index
+  # requires_authentication: no
+  # response_formats: json
+  # description: Return all users of the system.
+  #
+  # http_responses:
+  #   - 200
+  #   - 401
+  #   - 403
+  #
+  # params:
+  #   - name: page
+  #     description: number of page in pagination
+  #     required: false
+  #     type: Integer
+  #
+  #   - name: limit
+  #     description: number of elements by page in pagination
+  #
+  #   - name: name
+  #     description: name filter
+  #
+  # =end
+
 == Contributing
 
 1. Fork it

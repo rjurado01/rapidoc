@@ -74,7 +74,7 @@ describe ResourceDoc do
       routes_info = [ { :action => 'index', :resource => "users", :url => @urls[0] },
         { :action => 'index', :resource => "users", :url => @urls[1] },
         { :action => 'show', :resource => "users", :url => @urls[2] },
-          { :action => 'index', :resource => "albums", :url => @urls[3] } ]
+        { :action => 'index', :resource => "albums", :url => @urls[3] } ]
 
       @rdoc = ResourceDoc.new :users, routes_info
     end

@@ -28,8 +28,25 @@ describe ControllerExtractor do
         info.keys.should be_include( 'action' )
         info.keys.should be_include( 'method' )
         info.keys.should be_include( 'requires_authentication' )
-        info.keys.should be_include( 'response_format' )
+        info.keys.should be_include( 'response_formats' )
         info.keys.should be_include( 'description' )
+      end
+    end
+
+    context "when check users index action information" do
+      before do
+        @info = @extractor.get_actions_info.select{ |a|  a["action"] == "index" }.first
+      end
+
+      it "should return all params" do
+        params_name = @info["params"].map{ |p| p["name"] }
+        params_name.should be_include( 'page' )
+        params_name.should be_include( 'limit' )
+        params_name.should be_include( 'name' )
+      end
+
+      it "should return all descriptions" do
+        @info["params"].each{ |p| p.keys.should be_include( 'description' ) }
       end
     end
 

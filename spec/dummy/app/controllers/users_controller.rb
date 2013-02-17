@@ -10,12 +10,24 @@ class AlbumsController < ApplicationController
   # method: GET
   # action: index
   # requires_authentication: no
-  # response_format: json
+  # response_formats: json
   # description: Return all users of the system.
+  #
   # http_responses:
   #   - 200
   #   - 401
   #   - 403
+  #
+  # params:
+  #   - name: page
+  #     description: number of page in pagination
+  #     required: false
+  #     type: Integer
+  #   - name: limit
+  #     description: number of elements by page in pagination
+  #   - name: name
+  #     description: name filter
+  #
   # =end
   def index
   end
@@ -24,8 +36,15 @@ class AlbumsController < ApplicationController
   # method: GET
   # action: show
   # requires_authentication: no
-  # response_format: json
+  # response_formats: json
   # description: Return an user.
+  #
+  # params:
+  #   - name: id
+  #     required: true
+  #     description: user id
+  #     type: String
+  #
   # http_responses:
   #   - 200
   #   - 401
@@ -38,10 +57,11 @@ class AlbumsController < ApplicationController
   # method: POST
   # action: create
   # requires_authentication: yes
-  # response_format: json
+  # response_formats: json
   # description: Create new user.
+  #
   # params:
-  #   - name: Name
+  #   - name: name
   #     type: string
   #     required: true
   #
@@ -53,10 +73,25 @@ class AlbumsController < ApplicationController
   #   - name: password
   #     type: string
   #     required: true
+  #     description: >
+  #       must be 8 caracters
+  #       and be safe
+  #
+  #   - name: job
+  #     type: string
+  #     required: false
+  #     inclusion: job1, job2, job3
+  #
+  # errors:
+  #   - object: password
+  #     message: too_short
+  #     description: Password should has at least 4 characters.
+  #
   # http_responses:
   #   - 201
   #   - 401
   #   - 422
+  #
   # =end
   def create
   end
