@@ -10,7 +10,7 @@ class AlbumsController < ApplicationController
   # method: GET
   # action: index
   # requires_authentication: no
-  # response_format: json
+  # response_formats: json
   # description: Return all users of the system.
   #
   # http_responses:
@@ -21,7 +21,8 @@ class AlbumsController < ApplicationController
   # params:
   #   - name: page
   #     description: number of page in pagination
-  #     type: optional
+  #     required: false
+  #     type: Integer
   #   - name: limit
   #     description: number of elements by page in pagination
   #   - name: name
@@ -35,13 +36,14 @@ class AlbumsController < ApplicationController
   # method: GET
   # action: show
   # requires_authentication: no
-  # response_format: json
+  # response_formats: json
   # description: Return an user.
   #
   # params:
   #   - name: id
   #     required: true
   #     description: user id
+  #     type: String
   #
   # http_responses:
   #   - 200
@@ -55,7 +57,7 @@ class AlbumsController < ApplicationController
   # method: POST
   # action: create
   # requires_authentication: yes
-  # response_format: json
+  # response_formats: json
   # description: Create new user.
   #
   # params:
@@ -73,14 +75,12 @@ class AlbumsController < ApplicationController
   #     required: true
   #     description: >
   #       must be 8 caracters
-  #       adfdasf adsf adf
-  #
-  #         lkjkljklj
+  #       and be safe
   #
   #   - name: job
   #     type: string
   #     required: false
-  #     include: job1, job2, job3
+  #     inclusion: job1, job2, job3
   #
   # errors:
   #   - object: password

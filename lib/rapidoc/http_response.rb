@@ -21,8 +21,10 @@ module Rapidoc
         when 200
           'OK'
         when 201
-          'Unauthorized'
+          'Created'
         when 401
+          'Unauthorized'
+        when 404
           'Not found'
         when 422
           'Unprocessable Entity'

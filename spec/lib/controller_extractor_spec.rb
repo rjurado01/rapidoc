@@ -28,7 +28,7 @@ describe ControllerExtractor do
         info.keys.should be_include( 'action' )
         info.keys.should be_include( 'method' )
         info.keys.should be_include( 'requires_authentication' )
-        info.keys.should be_include( 'response_format' )
+        info.keys.should be_include( 'response_formats' )
         info.keys.should be_include( 'description' )
       end
     end

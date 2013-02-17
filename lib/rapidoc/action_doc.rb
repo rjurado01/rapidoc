@@ -9,7 +9,7 @@ module Rapidoc
   #
   class ActionDoc
     attr_reader :resource, :action, :action_method, :urls, :description,
-      :http_responses, :response_formats, :file, :params, :errors
+      :http_responses, :response_formats, :file, :params, :errors, :authentication
 
     ##
     # @param resource [String] resource name
@@ -22,7 +22,8 @@ module Rapidoc
       @action           = action_info["action"]
       @action_method    = action_info["method"]
       @description      = action_info["description"]
-      @response_formats = action_info["response_format"]
+      @response_formats = action_info["response_formats"]
+      @authentication   = action_info["requires_authentication"]
       @params           = action_info["params"]
       @file             = resource.to_s + "_" + @action.to_s
       @http_responses   = get_http_responses action_info["http_responses"]
@@ -41,7 +42,7 @@ module Rapidoc
           @errors << { "object" => param["name"], "message" => "blank" }
         end
 
-        if param["include"]
+        if param["inclusion"]
           @errors << { "object" => param["name"], "message" => "inclusion" }
         end
       end

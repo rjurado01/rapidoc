@@ -9,7 +9,7 @@ describe Rapidoc do
   end
 
   after do
-    #`rm -r #{::Rails.root.to_s + "/rapidoc"}`
+    `rm -r #{::Rails.root.to_s + "/rapidoc"}`
   end
 
   context "when create estructure" do

@@ -44,13 +44,33 @@ describe "Action page" do
         page.should have_text(@action_info.description)
       end
 
+      it "contains action name" do
+        page.should have_css("td", @action_info.action)
+      end
+
+      it "contains action method" do
+        page.should have_css("td", @action_info.action_method)
+      end
+
+      it "contains action response formats" do
+        page.should have_css("td", @action_info.response_formats)
+      end
+
+      it "contains icon that show if action requires authentication" do
+        if @action_info.authentication == true
+          page.should have_css("i.icon-ok")
+        else
+          page.should have_css("i.icon-remove")
+        end
+      end
+
       it "contains the resource URL" do
         page.should have_text(@action_info.urls.first)
       end
 
       it "contains the correct states" do
-        @action_info.http_responses do |http_response|
-          page.should have_content("td", http_response.description)
+        @action_info.http_responses.each do |http_response|
+          page.should have_css("td", http_response.description)
         end
       end
     end
@@ -83,12 +103,34 @@ describe "Action page" do
           page.should have_css( "table#table-params td", :text => param["description"] )
         end
       end
+
+      it "have a row with parameter type" do
+        @params_info.each do |param|
+          page.should have_css( "table#table-params td", :text => param["type"] )
+        end
+      end
     end
   end
 
   context "when visit users_create.html page" do
     before do
       visit '/rapidoc/users_create.html'
+    end
+
+    context "when check params tab" do
+      before do
+        @create_params_info = @user_resource.actions_doc.last.params
+      end
+
+      it "have a row with parameter type or inclusion" do
+        @create_params_info.each do |param|
+          if param["inclusion"]
+            page.should have_css( "table#table-params td", :text => param["inclusion"] )
+          else
+            page.should have_css( "table#table-params td", :text => param["type"] )
+          end
+        end
+      end
     end
 
     context "when check errors tab" do
@@ -98,7 +140,8 @@ describe "Action page" do
       end
 
       it "have table with one row for each error" do
-        page.should have_css( "table#table-errors tr", :count => @errors.size )
+        header = 1
+        page.should have_css( "table#table-errors tr", :count => @errors.size + header )
       end
 
       it "have a col with error object" do

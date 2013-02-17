@@ -43,7 +43,7 @@
 
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home">Home</a></li>
-        <li><a href="#profile">Params</a></li>
+        <li><a href="#params">Params</a></li>
         <li><a href="#errors">Errors</a></li>
         <li><a href="#messages">Petition</a></li>
         <li><a href="#settings">Answer</a></li>
@@ -54,6 +54,28 @@
           <p>
             {{action.description}}
           </p>
+            <table class="table table-hover action-options">
+            <tr>
+              <td>Action</td><td>{{action.action}}</td>
+            </tr>
+            <tr>
+              <td>Method</td><td>{{action.action_method}}</td>
+            </tr>
+            <tr>
+              <td class="routes">Required authentication</td>
+              <td>
+                {{#if action.authentication}}
+                  <i class="icon-ok"></i>
+                {{else}}
+                  <i class="icon-remove"></i>
+                {{/if}}
+              </td>
+            </tr>
+            <tr>
+              <td>Response formats</td><td>{{action.response_formats}}</td>
+            </tr>
+          </table>
+
 
            <h4 class="pad_top">Resource URL</h4>
            <pre>{{action.urls}}</pre>
@@ -69,7 +91,7 @@
           </table>
         </div>
 
-        <div class="tab-pane my_tab" id="profile">
+        <div class="tab-pane my_tab" id="params">
           <table class="table table-hover" id="table-params">
             {{#each action.params}}
               <tr>
@@ -79,6 +101,13 @@
                     <span class="small">required</span>
                   {{else}}
                     <span class="small">optional</span>
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if this.inclusion}}
+                    [ {{this.inclusion}} ]
+                  {{else}}
+                    {{this.type}}
                   {{/if}}
                 </td>
                 <td>{{this.description}}</td>
