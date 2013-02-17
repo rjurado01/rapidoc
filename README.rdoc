@@ -5,7 +5,10 @@ REST API documentation generator for rails projects.
 This gem creates new directory called 'rapidoc' in the project root with static html files.
 This files contain API documentation that is generated using 'routes.rb' and 'controllers' files.
 
-This is how the web interface look like: http://www.v2imagen.com/RDv
+This is how the web interface look like: 
+
+* Resources: http://www.v2imagen.com/RDv
+* Action-home: http://es.zimagez.com/zimage/capturadepantalla-170213-195254.php
 
 Rapidoc is based in restapi_doc gem: https://github.com/Alayho/restapi_doc
 
@@ -36,6 +39,22 @@ For generate documentation run:
 For clean all generate files run:
 
     rake rapidoc:clean
+
+== Configuration
+
+You can configure rapidoc in ``/config/rapidoc/rapidoc.yml`` file:
+
+  project_name: "Project Name"
+  company: "My company"
+  year: 2013
+  route: "doc"
+
+The first three parameters are used for show information about project.
+
+The *route* parameter let you specify where _rapidoc_ generate the documentation.
+If you don't put this parameter, rapidoc use default route:
+
+  path_project/rapidoc
 
 == Introducction
 
@@ -86,7 +105,6 @@ Action documentation:
   #
   #   - name: name
   #     description: name filter
-  #
   # =end
 
 == Contributing
