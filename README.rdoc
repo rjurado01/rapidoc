@@ -1,11 +1,12 @@
 = Rapidoc
 
-REST API documentation generator for rails projects.
+REST API documentation generator for rails projects ( 0.03 version ).
 
-This gem creates new directory called 'rapidoc' in the project root with static html files.
-This files contain API documentation that is generated using 'routes.rb' and 'controllers' files.
+This gem let you generate API documentation of your rails project in html format.
+It use routes information, _rapidoc_ _comments_ and json examples for generate
+static html files.
 
-This is how the web interface look like: 
+This is how the web interface look like:
 
 * Resources: http://www.v2imagen.com/RDv
 * Action-home: http://es.zimagez.com/zimage/capturadepantalla-170213-195254.php
@@ -14,17 +15,9 @@ Rapidoc is based in restapi_doc gem: https://github.com/Alayho/restapi_doc
 
 == Installation
 
-Download project
-
-    $ git clone <repo>
-
-Go to directory and install gem
-
-    $ rake install
-
 Add this line to your application's Gemfile:
 
-    gem 'rapidoc'
+    gem 'rapidoc', :git => 'https://github.com/drinor/rapidoc.git'
 
 And then execute:
 
@@ -47,14 +40,29 @@ You can configure rapidoc in ``/config/rapidoc/rapidoc.yml`` file:
   project_name: "Project Name"
   company: "My company"
   year: 2013
-  route: "doc"
+  doc_route: "doc"
+  examples_route: "examples"
 
 The first three parameters are used for show information about project.
 
-The *route* parameter let you specify where _rapidoc_ generate the documentation.
-If you don't put this parameter, rapidoc use default route:
+The *doc_route* parameter let you specify where _rapidoc_ will generate all the
+documentation. If you don't put this parameter, rapidoc use default doc_route:
 
   path_project/rapidoc
+
+If you add *doc_route:* *name* to config file, rapidoc create new folder called "name":
+
+  path_project/name
+
+The *examples_route* parameter let you specify where _rapidoc_ will search for
+requests/responeses examples files. If you don't put this parameter, rapidoc
+use default examples_route:
+
+  path_project/config/rapidoc/examples
+
+If you add *examples_route:* *name* to config file, rapidoc create new folder called "name":
+
+  path_project/name
 
 == Introducction
 
@@ -72,9 +80,41 @@ For get action documentation you need add an action block to resource controller
 
 Documentation blocks use *yaml* format.
 
-== Examples
+== Requests/responses examples
+
+Rapidoc let you define *json* files with requests/responses examples. You only need to add
+your files to *examples_route* and _rapidoc_ load it automatically in an action tab.
+
+Files should have the next name format:
+
+  <resource>_<action>_<type>.json
+
+Parameters:
+
+* *resource*: name of resource (plural)
+* *action*: controller action (index, create, show...)
+* *type*: request / response
+
+Name example:
+
+  users_create_request.json
+
+File example:
+
+  {
+    "usuario": {
+      "name": "Paul",
+      "age": 23,
+      "height": 1.7,
+      "favoriteBands": ["Band ABC", "Band XYZ"]
+    }
+  }
+
+== Documentation examples
 
 Resource documentation:
+
+  # users_controller.rb
 
   # =begin resource
   # description: Represents an user in the system.
@@ -106,6 +146,9 @@ Action documentation:
   #   - name: name
   #     description: name filter
   # =end
+  def index
+    ...
+  end
 
 == Contributing
 

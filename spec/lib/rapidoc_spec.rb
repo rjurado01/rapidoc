@@ -22,7 +22,7 @@ describe Rapidoc do
     end
 
     it "should create example dir" do
-      File.directory?( get_examples_dir ).should == true
+      File.directory?( examples_dir ).should == true
     end
   end
 

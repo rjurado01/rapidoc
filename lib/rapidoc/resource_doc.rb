@@ -59,7 +59,7 @@ module Rapidoc
       if controller_extractor
         controller_extractor.get_actions_info.map do |action_info|
           urls = get_action_urls( action_info["action"] )
-          ActionDoc.new( @name, action_info, urls, get_examples_dir )
+          ActionDoc.new( @name, action_info, urls, examples_dir )
         end
       end
     end

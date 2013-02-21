@@ -20,7 +20,7 @@ module Rapidoc
     FileUtils.mkdir target_dir unless File.directory? target_dir
     FileUtils.cp_r GEM_CONFIG_DIR + "/.", config_dir unless File.directory? config_dir
     FileUtils.cp_r GEM_ASSETS_DIR, target_dir
-    FileUtils.mkdir get_examples_dir unless File.directory? get_examples_dir
+    FileUtils.mkdir examples_dir unless File.directory? examples_dir
   end
 
   def remove_structure
@@ -42,7 +42,7 @@ module Rapidoc
   end
 
   def remove_examples
-    FileUtils.rm_r get_examples_dir if File.directory? get_examples_dir
+    FileUtils.rm_r examples_dir if File.directory? examples_dir
   end
 
   def generate_doc(resources_doc)

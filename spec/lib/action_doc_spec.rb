@@ -7,10 +7,10 @@ describe ActionDoc do
   before :all do
     @resource = "users"
     @urls = [ "/url1", "/url2" ]
-    @examples_route = get_examples_dir
+    @examples_route = examples_dir
     @json_info =  { "user" => { "name" => "Check", "apellido" => "Me" } }
-    response_file = get_examples_dir "users_index_response.json"
-    answer_file = get_examples_dir "users_index_request.json"
+    response_file = examples_dir "users_index_response.json"
+    answer_file = examples_dir "users_index_request.json"
 
     reset_structure
     File.open( response_file, 'w') { |file| file.write @json_info.to_json }
@@ -51,7 +51,7 @@ describe ActionDoc do
       http_responses = @action_doc.send( :get_http_responses, @info["http_responses"] )
     end
 
-    it "set correct example_route" do
+    it "set correct examples_route" do
       @action_doc.examples_route.should == @examples_route
     end
 

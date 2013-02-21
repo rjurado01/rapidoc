@@ -14,8 +14,8 @@ describe "Action page"  do
     reset_structure
 
     @json_info =  { "user" => { "name" => "Check", "apellido" => "Me" } }
-    response_file = get_examples_dir "users_index_response.json"
-    answer_file = get_examples_dir "users_index_response.json"
+    response_file = examples_dir "users_index_response.json"
+    answer_file = examples_dir "users_index_response.json"
 
     File.open( response_file, 'w') { |file| file.write @json_info.to_json }
     File.open( answer_file, 'w') { |file| file.write @json_info.to_json }
@@ -37,7 +37,7 @@ describe "Action page"  do
 
     context "when check action page" do
       it "contains title with text 'Project'" do
-        config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
+        config = YAML.load( File.read( config_file_path ) )
         page.should have_link( config["project_name"], '#' )
       end
 
