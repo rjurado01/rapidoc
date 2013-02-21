@@ -4,12 +4,12 @@ include Rapidoc
 
 describe Rapidoc do
 
-  before do
+  before :all do
     create_structure
   end
 
-  after do
-    `rm -r #{::Rails.root.to_s + "/rapidoc"}`
+  after :all do
+    remove_doc
   end
 
   context "when create estructure" do
@@ -19,6 +19,10 @@ describe Rapidoc do
 
     it "should create target dir" do
       File.directory?( target_dir ).should == true
+    end
+
+    it "should create example dir" do
+      File.directory?( get_examples_dir ).should == true
     end
   end
 

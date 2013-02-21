@@ -2,21 +2,32 @@ require 'bundler/setup'
 require 'rack/file'
 require 'capybara/rspec'
 require 'spec_helper'
+require 'rspec/rails'
 
 Capybara.app = Rack::File.new ::Rails.root.to_s
 
 include Rapidoc
 
-describe "Action page" do
+describe "Action page"  do
 
   before :all do
     reset_structure
-    generate_doc get_resources
-    @user_resource = get_resources.select{ |r| r.name == "users" }.first
+
+    @json_info =  { "user" => { "name" => "Check", "apellido" => "Me" } }
+    response_file = get_examples_dir "users_index_response.json"
+    answer_file = get_examples_dir "users_index_response.json"
+
+    File.open( response_file, 'w') { |file| file.write @json_info.to_json }
+    File.open( answer_file, 'w') { |file| file.write @json_info.to_json }
+
+    resources = get_resources
+    generate_doc resources
+    @user_resource = resources.select{ |r| r.name == 'users' }.first
   end
 
   after :all do
-    `rm -r #{ target_dir }`
+    remove_doc
+    remove_examples
   end
 
   context "when visit users_index.html page" do
@@ -36,7 +47,7 @@ describe "Action page" do
     end
 
     context "when check tab 'Home'" do
-      before do
+      before :all do
         @action_info = @user_resource.actions_doc.first
       end
 
@@ -76,7 +87,7 @@ describe "Action page" do
     end
 
     context "when check tab 'Params'" do
-      before do
+      before :all do
         @params_info = @user_resource.actions_doc.first.params
       end
 
@@ -134,7 +145,7 @@ describe "Action page" do
     end
 
     context "when check errors tab" do
-      before do
+      before :all do
         action_doc = @user_resource.actions_doc.select{ |ad| ad.action == "create" }.first
         @errors = action_doc.errors
       end
@@ -167,6 +178,26 @@ describe "Action page" do
           page.should have_css( "table#table-errors tr",
             :text => /#{error["object"]}.#{error["message"]}.*#{error["description"]}/ )
         end
+      end
+    end
+
+    context "when check 'request' tab" do
+      before do
+        visit '/rapidoc/users_index.html'
+      end
+
+      it "should contain the correct request" do
+        page.should have_text( @user_resource.actions_doc.first.example_req )
+      end
+    end
+
+    context "when check 'response' tab" do
+      before do
+        visit '/rapidoc/users_index.html'
+      end
+
+      it "should contain the correct response" do
+        page.should have_text( @user_resource.actions_doc.first.example_res )
       end
     end
   end

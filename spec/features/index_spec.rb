@@ -19,7 +19,7 @@ describe "Index page" do
   end
 
   after :all do
-    `rm -r #{ target_dir }`
+    remove_doc
   end
 
   context "when check global page" do

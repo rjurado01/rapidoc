@@ -18,19 +18,31 @@ module Rapidoc
 
   def create_structure
     FileUtils.mkdir target_dir unless File.directory? target_dir
-    FileUtils.cp_r GEM_CONFIG_DIR + "/.", config_dir unless File.directory? GEM_CONFIG_DIR
+    FileUtils.cp_r GEM_CONFIG_DIR + "/.", config_dir unless File.directory? config_dir
     FileUtils.cp_r GEM_ASSETS_DIR, target_dir
-  end
-
-  def reset_structure
-    FileUtils.remove_dir target_dir if File.directory? target_dir
-    FileUtils.mkdir target_dir
-    FileUtils.cp_r GEM_CONFIG_DIR + "/.", config_dir
-    FileUtils.cp_r GEM_ASSETS_DIR, target_dir
+    FileUtils.mkdir get_examples_dir unless File.directory? get_examples_dir
   end
 
   def remove_structure
-    FileUtils.rm_r target_dir
+    remove_doc
+    remove_config
+  end
+
+  def remove_config
+    FileUtils.rm_r config_dir if File.directory? config_dir
+  end
+
+  def remove_doc
+    FileUtils.rm_r target_dir if File.directory? target_dir
+  end
+
+  def reset_structure
+    remove_structure
+    create_structure
+  end
+
+  def remove_examples
+    FileUtils.rm_r get_examples_dir if File.directory? get_examples_dir
   end
 
   def generate_doc(resources_doc)

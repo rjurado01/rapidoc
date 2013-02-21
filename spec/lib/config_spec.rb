@@ -29,7 +29,7 @@ describe Rapidoc::Config do
   end
 
   context "check target_dir" do
-    before do
+    before :all do
       File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "route: \"vim\"" }
     end
 
@@ -58,9 +58,31 @@ describe Rapidoc::Config do
         File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }
       end
 
-      it "target_dir return incorrect route" do
+      it "target_dir return default route" do
         target_dir.should == ::Rails.root.to_s + "/rapidoc"
       end
+    end
+  end
+
+  context "when call get_examples_dir" do
+    context "when config file has an example dir" do
+      before do
+         File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "example_route: \"vim\"" }
+      end
+
+      it "get_examples_dir return correct route" do
+        get_examples_dir.should == "#{config_dir}/vim"
+      end
+    end
+    context "when config file hasn't an example dir" do
+      before do
+         File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }
+      end
+
+      it "get_examples_dir return default examples dir route" do
+        get_examples_dir.should == "#{config_dir}/examples"
+      end
+
     end
   end
 

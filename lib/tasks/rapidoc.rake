@@ -16,6 +16,6 @@ namespace :rapidoc do
 
   desc "Generate the config files"
   task :clean do
-    remove_structure
+    remove_doc
   end
 end

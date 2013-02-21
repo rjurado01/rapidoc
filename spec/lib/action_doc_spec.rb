@@ -5,11 +5,24 @@ include Rapidoc
 describe ActionDoc do
 
   before :all do
-    extractor = ControllerExtractor.new "users_controller.rb"
     @resource = "users"
     @urls = [ "/url1", "/url2" ]
+    @examples_route = get_examples_dir
+    @json_info =  { "user" => { "name" => "Check", "apellido" => "Me" } }
+    response_file = get_examples_dir "users_index_response.json"
+    answer_file = get_examples_dir "users_index_request.json"
+
+    reset_structure
+    File.open( response_file, 'w') { |file| file.write @json_info.to_json }
+    File.open( answer_file, 'w') { |file| file.write @json_info.to_json }
+
+    extractor = ControllerExtractor.new "users_controller.rb"
     @info = extractor.get_actions_info.first
-    @action_doc = ActionDoc.new @resource, @info, @urls
+    @action_doc = ActionDoc.new @resource, @info, @urls, @examples_route
+  end
+
+  after :all do
+    remove_examples
   end
 
   context "when initialize ActionDoc" do
@@ -35,13 +48,11 @@ describe ActionDoc do
     end
 
     it "set correct http responses" do
-      http_responses = @action_doc.get_http_responses( @info["http_responses"] )
+      http_responses = @action_doc.send( :get_http_responses, @info["http_responses"] )
+    end
 
-      @action_doc.http_responses.each_index do |i|
-        @action_doc.http_responses[i].code.should == http_responses[i].code
-        @action_doc.http_responses[i].description.should == http_responses[i].description
-        @action_doc.http_responses[i].label.should == http_responses[i].label
-      end
+    it "set correct example_route" do
+      @action_doc.examples_route.should == @examples_route
     end
 
     it "set correct requires authentication" do
@@ -55,12 +66,21 @@ describe ActionDoc do
     it "set correct file" do
       @action_doc.file.should == @resource.to_s + "_" + @info["action"].to_s
     end
+
+    it "set correct example_req" do
+      @action_doc.example_res.should == JSON.pretty_generate( @json_info )
+    end
+
+    it "set correct example_res" do
+      @action_doc.example_req.should == JSON.pretty_generate( @json_info )
+    end
+
   end
 
   context "when executing get_http_responses method" do
     before do
       @codes = [ 200, 401 ]
-      @http_responses = @action_doc.get_http_responses @codes
+      @http_responses = @action_doc.send( :get_http_responses, @codes )
     end
 
     it "return new HttpResponse Array" do

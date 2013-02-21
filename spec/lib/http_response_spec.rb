@@ -5,7 +5,7 @@ include Rapidoc
 describe "When check HttpResponse class" do
 
   context "when create new instance" do
-    before do
+    before :all do
       @http_response = HttpResponse.new 200
     end
 

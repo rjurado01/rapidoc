@@ -5,12 +5,12 @@ include Rapidoc
 describe ControllerExtractor do
   context "when create instance with valid controller file" do
 
-    before do
+    before :all do
       @extractor = ControllerExtractor.new "users_controller.rb"
     end
 
     context "when extract actions info from a controller" do
-      before do
+      before :all do
         @info = @extractor.get_actions_info
       end
 
@@ -34,7 +34,7 @@ describe ControllerExtractor do
     end
 
     context "when check users index action information" do
-      before do
+      before :all do
         @info = @extractor.get_actions_info.select{ |a|  a["action"] == "index" }.first
       end
 
@@ -51,7 +51,7 @@ describe ControllerExtractor do
     end
 
     context "when extract resource info from a controller" do
-      before do
+      before :all do
         @info = @extractor.get_resource_info
       end
 
@@ -65,7 +65,7 @@ describe ControllerExtractor do
     end
 
     context "when extract controller info" do
-      before do
+      before :all do
         @info = @extractor.get_controller_info
       end
 

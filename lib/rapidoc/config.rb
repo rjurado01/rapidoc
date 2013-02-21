@@ -8,6 +8,7 @@ module Rapidoc
   module Config
     GEM_CONFIG_DIR = File.join( File.dirname(__FILE__), 'config' )
     GEM_ASSETS_DIR = File.join( File.dirname(__FILE__), 'templates/assets' )
+    GEM_EXAMPLES_DIR = File.join( File.dirname(__FILE__), 'config/examples')
 
     def gem_templates_dir( f = nil )
      @gem_templates_dir ||= File.join( File.dirname(__FILE__), 'templates' )
@@ -38,9 +39,31 @@ module Rapidoc
     end
 
     def target_relative_dir
-      return "rapidoc" unless File.exists?("#{config_dir}/rapidoc.yml")
-      config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
+      return "rapidoc" unless File.exists?( "#{config_dir}/rapidoc.yml" )
+      config = YAML.load( File.read( "#{config_dir}/rapidoc.yml" ) )
       ( not config or not config.has_key?("route") )  ? "rapidoc" : config["route"]
+    end
+
+    def get_examples_dir( f = nil )
+      if File.exists?("#{config_dir}/rapidoc.yml")
+        dir = get_example_dir_from_config_file
+      else
+        dir = "#{config_dir}/examples"
+      end
+
+      form_file_name( dir, f )
+    end
+
+    private
+
+    def get_example_dir_from_config_file
+      config = YAML.load( File.read( "#{config_dir}/rapidoc.yml" ) )
+
+      if config and config.has_key?("example_route")
+        config_dir config["example_route"]
+      else
+        config_dir '/examples'
+      end
     end
   end
 end

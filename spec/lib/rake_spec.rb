@@ -9,7 +9,7 @@ describe Rake do
     end
 
     after do
-      `rm -r #{::Rails.root.to_s + "/rapidoc"}`
+      remove_doc 
     end
 
     let :run_rake_task do

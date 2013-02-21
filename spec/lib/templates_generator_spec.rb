@@ -4,12 +4,12 @@ include Rapidoc
 
 describe TemplatesGenerator do
 
-  before do
+  before :all do
     create_structure
   end
 
-  after do
-    `rm -r #{ target_dir }`
+  after :all do
+    remove_doc
   end
 
   context "when call generate_index_template" do
@@ -46,7 +46,8 @@ describe TemplatesGenerator do
     before do
       @resource_name = "users"
       @info = { "action" => "index", "method" => "GET", "description" => "example" }
-      create_action_template( get_action_template, ActionDoc.new( @resource_name, @info, nil ) )
+      @urls = [ "/url1", "/url2" ]
+      create_action_template( get_action_template, ActionDoc.new( @resource_name, @info, @urls) )
     end
 
     it "should create new action html file" do
