@@ -19,7 +19,7 @@ module Rapidoc
       handlebars = Handlebars::Context.new
 
       handlebars.register_helper('method_label') do |this, context, block|
-        get_method_label( block.call(context) )
+        get_method_label( block.fn(context) )
       end
 
       handlebars.compile( template )
