@@ -46,8 +46,12 @@ describe "Index page" do
     it "contains the correct methods" do
       @resources.each do |resource|
         resource.routes_info.each do |action|
-          href = ( resource.name.to_s + "_" + action[:action] + ".html" ).to_s
-          page.should have_link( action[:url], href: href )
+          if resource.actions_doc
+            href = "actions/" + resource.name.to_s + "_" + action[:action] + ".html"
+            page.should have_link( action[:url], href: href )
+          else
+            page.should have_text( action[:url] )
+          end
         end
       end
     end

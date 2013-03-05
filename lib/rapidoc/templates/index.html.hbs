@@ -44,11 +44,11 @@
       {{#each resources}}
         <div class="accordion-group">
           <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{this.name}}">
-              <strong>/ {{this.name}}</strong>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{this.simple_name}}">
+              <strong>{{this.name}}</strong>
             </a>
           </div>
-          <div id="collapse{{this.name}}" class="accordion-body collapse">
+          <div id="collapse{{this.simple_name}}" class="accordion-body collapse">
             <div class="accordion-inner">
               {{this.description}}</br></br>
               {{#if this.routes_info}}
@@ -59,7 +59,11 @@
                     {{this.method}}</span>
                   </td>
                   <td>
-                    <a href="{{this.resource}}_{{this.action}}.html">{{this.url}}<a>
+                    {{#if ../this.actions_doc}}
+                      <a href="actions/{{this.resource}}_{{this.action}}.html">{{this.url}}<a>
+                    {{else}}
+                      {{this.url}}
+                    {{/if}}
                   </td>
                 </tr>
                 {{/each}}

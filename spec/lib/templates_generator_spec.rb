@@ -35,7 +35,7 @@ describe TemplatesGenerator do
     it "should create new action.html file for each action"do
       @resources.each do |resource|
         resource.actions_doc.each do |action_doc|
-          route = target_dir + "/#{resource.name}_#{action_doc.action}.html"
+          route = actions_dir + "/#{resource.name}_#{action_doc.action}.html"
           File.exists?( route ).should == true
         end
       end
@@ -47,11 +47,12 @@ describe TemplatesGenerator do
       @resource_name = "users"
       @info = { "action" => "index", "method" => "GET", "description" => "example" }
       @urls = [ "/url1", "/url2" ]
-      create_action_template( get_action_template, ActionDoc.new( @resource_name, @info, @urls) )
+      create_action_template( get_action_template,
+                              ActionDoc.new( @resource_name, @info, @urls) )
     end
 
     it "should create new action html file" do
-      route = target_dir + "/#{@resource_name}_#{@info["action"]}.html"
+      route = actions_dir + "/#{@resource_name}_#{@info["action"]}.html"
       File.exists?( route ).should == true
     end
   end

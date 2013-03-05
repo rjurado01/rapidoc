@@ -29,6 +29,7 @@ module Rapidoc
       config_dir 'rapidoc.yml'
     end
 
+    # return the directory where rapidoc generates the doc
     def target_dir( f = nil )
       if File.exists?( config_file_path )
         form_file_name( target_dir_from_config, f )
@@ -37,11 +38,17 @@ module Rapidoc
       end
     end
 
+    # returns the directory where rapidoc generates actions (html files)
+    def actions_dir( f = nil )
+      f ? target_dir( "actions/#{f}" ) : target_dir( "actions" )
+    end
+
+    # returns the directory where rapidoc searches for examples
     def examples_dir( f = nil )
       if File.exists?( config_file_path )
         form_file_name( examples_dir_from_config_file, f )
       else
-        form_file_name( config_dir '/examples', f )
+        form_file_name( config_dir( '/examples' ), f )
       end
     end
 

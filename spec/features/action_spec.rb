@@ -14,11 +14,11 @@ describe "Action page"  do
     reset_structure
 
     @json_info =  { "user" => { "name" => "Check", "apellido" => "Me" } }
-    response_file = examples_dir "users_index_response.json"
-    answer_file = examples_dir "users_index_response.json"
+    request_file = examples_dir "users_create_request.json"
+    response_file = examples_dir "users_create_response.json"
 
+    File.open( request_file, 'w') { |file| file.write @json_info.to_json }
     File.open( response_file, 'w') { |file| file.write @json_info.to_json }
-    File.open( answer_file, 'w') { |file| file.write @json_info.to_json }
 
     resources = get_resources
     generate_doc resources
@@ -32,7 +32,7 @@ describe "Action page"  do
 
   context "when visit users_index.html page" do
     before do
-      visit '/rapidoc/users_index.html'
+      visit '/rapidoc/actions/users_index.html'
     end
 
     context "when check action page" do
@@ -92,7 +92,8 @@ describe "Action page"  do
       end
 
       it "have table with one row for each parameter" do
-        page.should have_css( "table#table-params tr", :count => @params_info.size )
+        # +1 becouse rapidoc add empty row at the end
+        page.should have_css( "table#table-params tr", :count => @params_info.size + 1 )
       end
 
       it "have a row with parameter name" do
@@ -125,10 +126,10 @@ describe "Action page"  do
 
   context "when visit users_create.html page" do
     before do
-      visit '/rapidoc/users_create.html'
+      visit '/rapidoc/actions/users_create.html'
     end
 
-    context "when check params tab" do
+    context "when check tab 'Params'" do
       before do
         @create_params_info = @user_resource.actions_doc.last.params
       end
@@ -144,7 +145,7 @@ describe "Action page"  do
       end
     end
 
-    context "when check errors tab" do
+    context "when check tab 'Errors'" do
       before :all do
         action_doc = @user_resource.actions_doc.select{ |ad| ad.action == "create" }.first
         @errors = action_doc.errors
@@ -181,21 +182,13 @@ describe "Action page"  do
       end
     end
 
-    context "when check 'request' tab" do
-      before do
-        visit '/rapidoc/users_index.html'
-      end
-
+    context "when check tab 'Request'" do
       it "should contain the correct request" do
         page.should have_text( @user_resource.actions_doc.first.example_req )
       end
     end
 
-    context "when check 'response' tab" do
-      before do
-        visit '/rapidoc/users_index.html'
-      end
-
+    context "when check tab 'Response'" do
       it "should contain the correct response" do
         page.should have_text( @user_resource.actions_doc.first.example_res )
       end

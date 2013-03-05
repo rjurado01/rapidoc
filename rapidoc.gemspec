@@ -17,10 +17,10 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_development_dependency  "rails", ">= 3.2.0"
+  gem.add_dependency  "rails", ">= 3.2.0"
+  gem.add_dependency  "handlebars", "~> 0.4.0"
   gem.add_development_dependency  "rspec-rails"
   gem.add_development_dependency  "sqlite3", "~> 1.3.7"
-  gem.add_development_dependency  "handlebars", "~> 0.4.0"
   gem.add_development_dependency  "capybara"
   gem.add_development_dependency  "rack"
 end

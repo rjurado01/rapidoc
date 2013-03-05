@@ -24,6 +24,12 @@ module Rapidoc
       get_controller_info
     end
 
+    def simple_name
+      return self.name.delete '/'
+    end
+
+    private
+
     ##
     # Extract information from controller file
     #

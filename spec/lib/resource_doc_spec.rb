@@ -22,7 +22,7 @@ describe ResourceDoc do
       end
 
       it "return correct description" do
-        description = @rdoc.get_description @extractor
+          description = @rdoc.send( :get_description, @extractor )
         description.should == @extractor.get_resource_info["description"]
       end
     end
@@ -35,7 +35,7 @@ describe ResourceDoc do
       end
 
       it "return not_found message" do
-        description = @rdoc.get_description @extractor
+        description = @rdoc.send( :get_description, @extractor )
         description.should == "not_found"
       end
     end
@@ -47,7 +47,7 @@ describe ResourceDoc do
       end
 
       it "return not_controller message" do
-        description = @rdoc.get_description @extractor
+        description = @rdoc.send( :get_description, @extractor )
         description.should == "not_controller"
       end
     end
@@ -61,7 +61,7 @@ describe ResourceDoc do
     end
 
     it "should return ActionDoc array" do
-      actions_doc = @rdoc.get_actions_doc( @controller_extractor )
+      actions_doc = @rdoc.send( :get_actions_doc, @controller_extractor )
       actions_doc.class.should == Array
       actions_doc.each{ |ad| ad.class.should == ActionDoc }
     end
@@ -80,7 +80,7 @@ describe ResourceDoc do
     end
 
     it "should return correct urls" do
-      action_urls = @rdoc.get_action_urls( @action )
+      action_urls = @rdoc.send( :get_action_urls, @action )
       action_urls.should be_include( @urls[0] )
       action_urls.should be_include( @urls[1] )
       action_urls.should_not be_include( @urls[2] )

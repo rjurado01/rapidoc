@@ -34,7 +34,7 @@ module Rapidoc
       @example_res      = ""
       @example_req      = ""
 
-      load_params_error if @params
+      #load_params_error if @params
       load_examples
     end
 

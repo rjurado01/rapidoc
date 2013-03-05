@@ -17,7 +17,9 @@ module Rapidoc
   METHODS = [ "GET", "PUT", "DELETE", "POST" ]
 
   def create_structure
+    # should be done in this order
     FileUtils.mkdir target_dir unless File.directory? target_dir
+    FileUtils.mkdir actions_dir unless File.directory? actions_dir
     FileUtils.cp_r GEM_CONFIG_DIR + "/.", config_dir unless File.directory? config_dir
     FileUtils.cp_r GEM_ASSETS_DIR, target_dir
     FileUtils.mkdir examples_dir unless File.directory? examples_dir
