@@ -44,15 +44,18 @@ describe TemplatesGenerator do
 
   context "when call create_action_template function" do
     before do
-      @resource_name = "users"
-      @info = { "action" => "index", "method" => "GET", "description" => "example" }
-      @urls = [ "/url1", "/url2" ]
-      create_action_template( get_action_template,
-                              ActionDoc.new( @resource_name, @info, @urls) )
+      extractor = ControllerExtractor.new "users_controller.rb"
+      resource_info = get_routes_doc.get_actions_route_info( :users )
+
+      info = resource_info.group_by{ |entrie| entrie[:action] }['create'].first
+      controller_info = extractor.get_action_info( 'create' )
+      @action_doc = ActionDoc.new( info, controller_info, examples_dir )
+      
+      create_action_template( get_action_template, @action_doc )
     end
 
     it "should create new action html file" do
-      route = actions_dir + "/#{@resource_name}_#{@info["action"]}.html"
+      route = actions_dir + "/#{@action_doc.resource}_#{@action_doc.action}.html"
       File.exists?( route ).should == true
     end
   end

@@ -1,29 +1,29 @@
 # encoding: utf-8
-# require_relative 'method_doc'
 
 module Rapidoc
 
   ##
-  # This class include all info about a resource
-  # For extract info from controller file use ControllerExtractor
-  # It include an array of ActionDoc with each action information.
+  # This class includes all info about a resource
+  # To extract info from controller file uses ControllerExtractor
+  # It includes an array of ActionDoc with each action information
   #
   class ResourceDoc
-    attr_reader :name, :controller_file, :actions_doc, :description, :routes_info
+    attr_reader :name, :description, :controller_file, :actions_doc 
 
     ##
-    # @param name resource name
-    # @param routes_info is an array of hashes with this format:
-    #   { :action => 'action', :resource => 'resource', :method => 'method', :url => 'url' }
+    # @param resource_name [String] resource name
+    # @param routes_doc [RoutesDoc] routes documentation
     #
-    def initialize( name, routes_info )
-      @name = name.to_s
+    def initialize( resource_name, routes_actions_info )
+      @name = resource_name.to_s
       @controller_file = name.to_s + '_controller.rb'
-      @routes_info = routes_info
 
-      get_controller_info
+      generate_info routes_actions_info
     end
 
+    ##
+    # Names with '/' caracter produce problems in html ids
+    #
     def simple_name
       return self.name.delete '/'
     end
@@ -31,53 +31,35 @@ module Rapidoc
     private
 
     ##
-    # Extract information from controller file
+    # Create description and actions_doc
     #
-    def get_controller_info
+    def generate_info( routes_info )
+      if routes_info
+        extractor = get_controller_extractor
+        @description = extractor.get_resource_info['description'] if extractor
+        @actions_doc =  get_actions_doc( routes_info, extractor )
+      end
+    end
+
+    ##
+    # @return [ControllerExtractor] extractor that allow read controller files
+    # and extract action and resource info from them
+    #
+    def get_controller_extractor
       if File.exists? controller_dir( @controller_file )
-        extractor = ControllerExtractor.new @controller_file
+        ControllerExtractor.new @controller_file
       else
-        extractor = nil
-      end
-
-      @description = get_description extractor
-      @actions_doc =  get_actions_doc extractor
-    end
-
-
-    ##
-    # Read resource description from controller file using controller_extractor
-    # @return [String] resource description
-    #
-    def get_description( controller_extractor )
-      if controller_extractor
-        info = controller_extractor.get_resource_info
-        info ? info["description"] : "not_found"
-      else
-        "not_controller"
+        nil
       end
     end
 
     ##
-    # @return [Array] resource ActionDoc.
-    #
-    def get_actions_doc( controller_extractor )
-      if controller_extractor
-        controller_extractor.get_actions_info.map do |action_info|
-          urls = get_action_urls( action_info["action"] )
-          ActionDoc.new( @name, action_info, urls, examples_dir )
-        end
-      end
-    end
-
-    ##
-    # @return [Array] all urls from routes_info that include 'action' and 'resource'
-    #
-    def get_action_urls( action )
-      if @routes_info
-        @routes_info.select do |action_info|
-          action_info[:action] == action and action_info[:resource] == @name.to_s
-        end.map{ |a| a[:url] }
+    # @return [Array] all the resource ActionDoc
+    # 
+    def get_actions_doc( routes_actions_info, extractor )
+      routes_actions_info.map do |route_info|
+        controller_info = extractor ? extractor.get_action_info( route_info[:action] ) : nil
+        ActionDoc.new( route_info, controller_info, examples_dir )
       end
     end
   end

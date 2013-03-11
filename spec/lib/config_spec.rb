@@ -35,6 +35,7 @@ describe Rapidoc::Config do
     context "when config file has a route" do
       before do
         File.open( config_file_path, 'w') { |file| file.write "doc_route: \"vim\"" }
+        load_config
       end
 
       it "returns correct route" do
@@ -45,6 +46,7 @@ describe Rapidoc::Config do
     context "when config file hasn't a route" do
       before do
         File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }
+        load_config
       end
 
       it "returns default route" do
@@ -63,6 +65,7 @@ describe Rapidoc::Config do
     context "when config file has a route" do
       before do
         File.open( config_file_path, 'w') { |file| file.write "doc_route: \"vim\"" }
+        load_config
       end
 
       it "returns correct route" do
@@ -73,6 +76,7 @@ describe Rapidoc::Config do
     context "when config file hasn't a route" do
       before do
         File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }
+        load_config
       end
 
       it "returns default route" do
@@ -90,8 +94,11 @@ describe Rapidoc::Config do
   context "when call examples_dir" do
     context "when config file has an example dir" do
       before do
-         File.open("#{config_dir}/rapidoc.yml", 'w') {
-           |file| file.write "examples_route: \"vim\"" }
+        File.open( "#{config_dir}/rapidoc.yml", 'w' ) do |file|
+          file.write "examples_route: \"vim\""
+        end
+
+        load_config
       end
 
       it "examples_dir returns correct route" do
@@ -100,7 +107,8 @@ describe Rapidoc::Config do
     end
     context "when config file hasn't an example dir" do
       before do
-         File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }
+        File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }   
+        load_config
       end
 
       it "examples_dir returns default examples dir route" do

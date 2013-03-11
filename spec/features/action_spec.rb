@@ -20,9 +20,11 @@ describe "Action page"  do
     File.open( request_file, 'w') { |file| file.write @json_info.to_json }
     File.open( response_file, 'w') { |file| file.write @json_info.to_json }
 
-    resources = get_resources
-    generate_doc resources
-    @user_resource = resources.select{ |r| r.name == 'users' }.first
+    load_config
+    resources_doc = get_resources
+    generate_actions_templates( resources_doc )
+
+    @user_resource = resources_doc.select{ |r| r.name == 'users' }.first
   end
 
   after :all do
@@ -131,7 +133,8 @@ describe "Action page"  do
 
     context "when check tab 'Params'" do
       before do
-        @create_params_info = @user_resource.actions_doc.last.params
+        @create_params_info =
+          @user_resource.actions_doc.select{ |ad| ad.action == 'create' }.first.params
       end
 
       it "have a row with parameter type or inclusion" do

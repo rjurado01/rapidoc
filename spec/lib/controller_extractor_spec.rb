@@ -3,13 +3,15 @@ require "spec_helper"
 include Rapidoc
 
 describe ControllerExtractor do
-  context "when create instance with valid controller file" do
 
+  context "when create instance with valid controller file" do
     before :all do
       @extractor = ControllerExtractor.new "users_controller.rb"
     end
 
-    context "when extract actions info from a controller" do
+    context
+
+    context "when call get_actions_info function" do
       before :all do
         @info = @extractor.get_actions_info
       end
@@ -20,61 +22,48 @@ describe ControllerExtractor do
         actions.should be_include( 'show' )
         actions.should be_include( 'create' )
       end
+    end
+
+    context "when call get_action_info " do
+      before :all do
+        @info = @extractor.get_action_info( "index" )
+      end
+
+      it "returns the correct action" do
+        @info['action'].should == "index"
+      end
 
       it "should return all mandatary fields" do
-        info = @info.first
-
-        info.keys.should be_include( 'http_responses' )
-        info.keys.should be_include( 'action' )
-        info.keys.should be_include( 'method' )
-        info.keys.should be_include( 'requires_authentication' )
-        info.keys.should be_include( 'response_formats' )
-        info.keys.should be_include( 'description' )
+        @info.keys.should be_include( 'http_responses' )
+        @info.keys.should be_include( 'action' )
+        @info.keys.should be_include( 'method' )
+        @info.keys.should be_include( 'requires_authentication' )
+        @info.keys.should be_include( 'response_formats' )
+        @info.keys.should be_include( 'description' )
       end
     end
 
-    context "when check users index action information" do
-      before :all do
-        @info = @extractor.get_actions_info.select{ |a|  a["action"] == "index" }.first
-      end
-
-      it "should return all params" do
-        params_name = @info["params"].map{ |p| p["name"] }
-        params_name.should be_include( 'page' )
-        params_name.should be_include( 'limit' )
-        params_name.should be_include( 'name' )
-      end
-
-      it "should return all descriptions" do
-        @info["params"].each{ |p| p.keys.should be_include( 'description' ) }
-      end
-    end
-
-    context "when extract resource info from a controller" do
+    context "when call get_resource_info" do
       before :all do
         @info = @extractor.get_resource_info
       end
 
-      it "should return only info about resource" do
-        @info.size.should == 1
-      end
-
-      it "should return info about resource" do
-        @info.should be_include( 'description' )
+      it "controller info contatins resource description" do
+        @info.keys.should be_include( 'description' )
       end
     end
 
-    context "when extract controller info" do
+    context "when call get_controller_info" do
       before :all do
         @info = @extractor.get_controller_info
       end
 
-      it "return correct resource info" do
-        @info["description"].should == @extractor.get_resource_info["description"]
+      it "returns resource description" do
+        @info.keys.should be_include( 'description' )
       end
 
-      it "return correct actions info" do
-        @info["actions"].should == @extractor.get_actions_info
+      it "returns resource actions info" do
+        @info.keys.should be_include( 'actions' )
       end
     end
   end

@@ -11,53 +11,30 @@ module Rapidoc
   #
   module ResourcesExtractor
 
-    # Reads 'rake routes' output and gets the resources info
-    def get_resources_info
-      resource_info = {}
+    ##
+    # Reads 'rake routes' output and gets the routes info
+    # @return [RoutesDoc] class with routes info
+    #
+    def get_routes_doc
+      routes_doc = RoutesDoc.new
       routes = Dir.chdir( ::Rails.root.to_s ) { `rake routes` }
 
       routes.split("\n").each do |entry|
-        begin
-          if entry.split.size == 4
-            method, url, controller_action = entry.split.slice(1, 3)
-          else
-             method, url, controller_action = entry.split
-          end
-
-          if METHODS.include? method.upcase
-            resource, action = controller_action.split('#')
-            resource_info[resource.to_sym] ||= []
-            resource_info[resource.to_sym] << { :resource => resource, :action => action,
-              :method => method,  :url => url }
-          end
-        rescue
-        end
+        routes_doc.add_route( entry )
       end
 
-      resource_info
+      routes_doc
     end
 
+    ##
+    # Create new ResourceDoc for each resource extracted from RoutesDoc
+    # @return [Array] ResourceDoc array
+    #
     def get_resources
-      resources_info = get_resources_info.sort
-      resources = []
+      routes_doc = get_routes_doc
 
-      resources_info.each do |resource, action_entries|
-        resources << ResourceDoc.new( resource, order_actions( action_entries ) )
-      end
-
-      resources
-    end
-
-    def order_actions actions
-      if actions
-        methods = actions.map{ |action| action[:method] }.uniq
-        info =[]
-
-        methods.each do |method|
-          actions.each{ |action| info << action if action[:method] == method }
-        end
-
-        return info
+      routes_doc.get_resources_names.map do |resource|
+        ResourceDoc.new( resource, routes_doc.get_actions_route_info( resource ) )
       end
     end
   end

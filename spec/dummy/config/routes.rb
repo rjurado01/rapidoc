@@ -4,4 +4,6 @@ Dummy::Application.routes.draw do
       resources :images, :only => [ :index, :show, :create, :update, :destroy ]
     end
   end
+
+  resources :images
 end

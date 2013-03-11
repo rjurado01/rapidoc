@@ -4,36 +4,40 @@ include Rapidoc
 
 describe Rapidoc::ResourcesExtractor do
 
-  context "when executing get_resources_info function" do
+  context "when executing get_routes_doc" do
     before :all do
-      @resources_info = get_resources_info
+      @routes_doc = get_routes_doc
     end
 
-    it "return correct resources" do
-      @resources_info.keys.should be_include(:images)
-      @resources_info.keys.should be_include(:albums)
-      @resources_info.keys.should be_include(:users)
+    it "returns RoutesDoc instance" do
+      @routes_doc.class.should == RoutesDoc
     end
 
-     it "return correct resource methods" do
-      users_methods = @resources_info[:users].map{ |m| m[:method] }.uniq
-
-      users_methods.should be_include( "GET" )
-      users_methods.should be_include( "POST" )
-      users_methods.should_not be_include( "PUT" )
-      users_methods.should_not be_include( "DELETE" )
-    end
-
-    it "return correct resource actions" do
-      users_actions = @resources_info[:users].map{ |m| m[:action] }
-
-      users_actions.should be_include( "index" )
-      users_actions.should be_include( "show" )
-      users_actions.should be_include( "create" )
-      users_actions.should_not be_include( "update" )
-      users_actions.should_not be_include( "destroy" )
+    it "instance include all resources" do
+      resources_names = @routes_doc.get_resources_names
+      resources_names.should be_include(:images)
+      resources_names.should be_include(:albums)
+      resources_names.should be_include(:users)
     end
   end
+
+  context "when executing get_routes_doc and config has resources black list" do
+    before :all do
+      @routes_doc = get_routes_doc
+    end
+
+    it "returns RoutesDoc instance" do
+      @routes_doc.class.should == RoutesDoc
+    end
+
+    it "instance include all resources" do
+      resources_names = @routes_doc.get_resources_names
+      resources_names.should be_include(:images)
+      resources_names.should be_include(:albums)
+      resources_names.should be_include(:users)
+    end
+  end
+
 
   context "when executing get_resources function" do
     before :all do

@@ -2,17 +2,20 @@ require 'handlebars'
 require "rapidoc/config"
 require "rapidoc/version"
 require "tasks/railtie.rb"
+require "rapidoc/routes_doc"
 require "rapidoc/resource_doc"
 require "rapidoc/action_doc"
 require "rapidoc/controller_extractor"
 require "rapidoc/resources_extractor"
 require "rapidoc/templates_generator"
+require "rapidoc/yaml_parser"
 
 module Rapidoc
 
   include Config
   include ResourcesExtractor
   include TemplatesGenerator
+  include YamlParser
 
   METHODS = [ "GET", "PUT", "DELETE", "POST" ]
 
@@ -47,7 +50,9 @@ module Rapidoc
     FileUtils.rm_r examples_dir if File.directory? examples_dir
   end
 
-  def generate_doc(resources_doc)
+  def generate_doc
+    resources_doc = get_resources
+
     generate_index_template( resources_doc )
     generate_actions_templates( resources_doc )
   end

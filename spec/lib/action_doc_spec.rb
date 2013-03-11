@@ -5,20 +5,24 @@ include Rapidoc
 describe ActionDoc do
 
   before :all do
-    @resource = "users"
-    @urls = [ "/url1", "/url2" ]
-    @examples_route = examples_dir
     @json_info =  { "user" => { "name" => "Check", "apellido" => "Me" } }
-    response_file = examples_dir "users_index_response.json"
-    answer_file = examples_dir "users_index_request.json"
+    response_file = examples_dir "users_create_response.json"
+    answer_file = examples_dir "users_create_request.json"
 
     reset_structure
     File.open( response_file, 'w') { |file| file.write @json_info.to_json }
     File.open( answer_file, 'w') { |file| file.write @json_info.to_json }
 
+    @info = { 
+      :resource=>"users", 
+      :action=>"create",
+      :method=>"POST",
+      :urls=>["/users(.:format)"]
+    }
+
     extractor = ControllerExtractor.new "users_controller.rb"
-    @info = extractor.get_actions_info.first
-    @action_doc = ActionDoc.new @resource, @info, @urls, @examples_route
+    @controller_info = extractor.get_action_info( 'create' )
+    @action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
   end
 
   after :all do
@@ -26,37 +30,33 @@ describe ActionDoc do
   end
 
   context "when initialize ActionDoc" do
-
     it "set correct action info" do
-      @action_doc.action.should == @info["action"]
+      @action_doc.action.should == @info[:action]
     end
 
     it "set correct resource" do
-      @action_doc.resource.should == @resource
+      @action_doc.resource.should == @info[:resource]
     end
 
     it "set correct urls" do
-      @action_doc.urls.should == @urls
+      @action_doc.urls.should == @info[:urls]
     end
 
     it "set correct action method" do
-      @action_doc.action_method.should == @info["method"]
+      @action_doc.action_method.should == @info[:method]
     end
 
     it "set correct description" do
-      @action_doc.description.should == @info["description"]
+      @action_doc.description.should == @controller_info["description"]
     end
 
     it "set correct http responses" do
-      http_responses = @action_doc.send( :get_http_responses, @info["http_responses"] )
-    end
-
-    it "set correct examples_route" do
-      @action_doc.examples_route.should == @examples_route
+      http_responses = @action_doc.send( :get_http_responses,
+                                         @controller_info["http_responses"] )
     end
 
     it "set correct requires authentication" do
-      if @info["requires_authentication"] == true
+      if @controller_info["requires_authentication"] == true
         @action_doc.authentication.should == true
       else
         @action_doc.authentication.should == false
@@ -64,7 +64,7 @@ describe ActionDoc do
     end
 
     it "set correct file" do
-      @action_doc.file.should == @resource.to_s + "_" + @info["action"].to_s
+      @action_doc.file.should == @info[:resource].to_s + "_" + @info[:action].to_s
     end
 
     it "set correct example_req" do
@@ -74,7 +74,6 @@ describe ActionDoc do
     it "set correct example_res" do
       @action_doc.example_req.should == JSON.pretty_generate( @json_info )
     end
-
   end
 
   context "when executing get_http_responses method" do
@@ -107,9 +106,7 @@ describe ActionDoc do
   context "when checking errors" do
     context "when action has custom errors" do
       before :all do
-        resource = get_resources.select{ |r| r.name == "users" }.first
-        action_doc = resource.actions_doc.select{ |ad| ad.action == "create" }.first
-        @errors = action_doc.errors
+        @errors = @action_doc.errors
       end
 
       it "return all errors" do

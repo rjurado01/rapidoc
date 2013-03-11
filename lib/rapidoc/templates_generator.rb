@@ -6,10 +6,8 @@ module Rapidoc
   module TemplatesGenerator
 
     def generate_index_template( resources_doc )
-      config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
-
       template = get_index_template
-      result = template.call( :info => config, :resources => resources_doc )
+      result = template.call( :info => rapidoc_config, :resources => resources_doc )
 
       File.open( target_dir("index.html"), 'w' ) { |file| file.write result }
     end
@@ -52,9 +50,7 @@ module Rapidoc
     end
 
     def create_action_template( template, action_doc )
-      config = YAML.load( File.read("#{config_dir}/rapidoc.yml") )
-      result = template.call( :info => config, :action => action_doc )
-
+      result = template.call( :info => rapidoc_config, :action => action_doc )
       File.open( actions_dir("#{action_doc.file}.html"), 'w' ) { |file| file.write result }
     end
 
@@ -63,6 +59,5 @@ module Rapidoc
       handlebars = Handlebars::Context.new
       handlebars.compile( template )
     end
-
   end
 end

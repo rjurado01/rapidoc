@@ -11,7 +11,9 @@ describe "Index page" do
 
   before :all do
     reset_structure
-    generate_doc get_resources
+    load_config
+    @resources = get_resources
+    generate_doc
   end
 
   before do
@@ -19,7 +21,7 @@ describe "Index page" do
   end
 
   after :all do
-    remove_doc
+    #remove_doc
   end
 
   context "when check global page" do
@@ -33,10 +35,6 @@ describe "Index page" do
   end
 
   context "when check resources" do
-    before :all do
-      @resources = get_resources
-    end
-
     it "contains the correct number of resources" do
       page.find(".accordion").should have_content "albums"
       page.find(".accordion").should have_content "images"
@@ -45,12 +43,13 @@ describe "Index page" do
 
     it "contains the correct methods" do
       @resources.each do |resource|
-        resource.routes_info.each do |action|
-          if resource.actions_doc
-            href = "actions/" + resource.name.to_s + "_" + action[:action] + ".html"
-            page.should have_link( action[:url], href: href )
-          else
-            page.should have_text( action[:url] )
+        resource.actions_doc.each do |action|
+          action.urls.each do |url|
+            if action.has_controller_info
+              page.should have_link( url, href: "actions/" + action.file + ".html" )
+            else
+              page.should have_text( url )
+            end
           end
         end
       end

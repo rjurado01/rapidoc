@@ -28,7 +28,7 @@ describe Rapidoc do
 
   context "when executing genarate_doc function" do
     before do
-      generate_doc( get_resources )
+      generate_doc
     end
 
     it "should create new index.html file" do

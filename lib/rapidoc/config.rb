@@ -10,6 +10,8 @@ module Rapidoc
     GEM_ASSETS_DIR = File.join( File.dirname(__FILE__), 'templates/assets' )
     GEM_EXAMPLES_DIR = File.join( File.dirname(__FILE__), 'config/examples')
 
+    @@config = nil
+
     def gem_templates_dir( f = nil )
      gem_templates_dir ||= File.join( File.dirname(__FILE__), 'templates' )
      form_file_name gem_templates_dir, f
@@ -27,6 +29,16 @@ module Rapidoc
 
     def config_file_path
       config_dir 'rapidoc.yml'
+    end
+
+    def rapidoc_config
+      @@config
+    end
+
+    def load_config
+      if File.exists?( config_file_path )
+        @@config = YAML.load( File.read( config_file_path ) )
+      end
     end
 
     # return the directory where rapidoc generates the doc
@@ -55,20 +67,16 @@ module Rapidoc
     private
 
     def target_dir_from_config
-      config = YAML.load( File.read( config_file_path ) )
-
-      if config and config.has_key?( "doc_route" )
-        File.join(::Rails.root.to_s, config['doc_route'] )
+      if @@config and @@config.has_key?( "doc_route" )
+        File.join(::Rails.root.to_s, @@config['doc_route'] )
       else
         File.join(::Rails.root.to_s, 'rapidoc' )
       end
     end
 
     def examples_dir_from_config_file
-      config = YAML.load( File.read( config_file_path ) )
-
-      if config and config.has_key?("examples_route")
-        File.join( ::Rails.root.to_s, config["examples_route"] )
+      if @@config and @@config.has_key?("examples_route")
+        File.join( ::Rails.root.to_s, @@config["examples_route"] )
       else
         config_dir '/examples'
       end

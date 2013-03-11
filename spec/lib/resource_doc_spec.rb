@@ -3,88 +3,129 @@ require 'spec_helper.rb'
 include Rapidoc
 
 describe ResourceDoc do
-  context "when create new valid instance" do
+  before :all do
+    @extractor = ControllerExtractor.new "users_controller.rb"
+    @routes_actions_info = get_routes_doc.get_actions_route_info( :users )
+  end
+
+  context "when create new valid instance only with resource name" do
     before do
       @resource_name = "users"
       @rdoc = ResourceDoc.new @resource_name, nil
     end
 
-    it "should save it correctly" do
+    it "saves it correctly" do
       @rdoc.name.should == @resource_name
+      @rdoc.controller_file.should == @resource_name + '_controller.rb'
     end
   end
 
-  context "when check get_description function" do
-    context "when extractor is valid and resource has description" do
-      before do
-        @extractor = ControllerExtractor.new "users_controller.rb"
-        @rdoc = ResourceDoc.new "users", nil
-      end
-
-      it "return correct description" do
-          description = @rdoc.send( :get_description, @extractor )
-        description.should == @extractor.get_resource_info["description"]
-      end
-    end
-
-    context "when extractor is valid and resource hasn't description" do
-      before do
-        @extractor = ControllerExtractor.new "users_controller.rb"
-        @extractor.stub(:get_resource_info).and_return(false)
-        @rdoc = ResourceDoc.new "users", nil
-      end
-
-      it "return not_found message" do
-        description = @rdoc.send( :get_description, @extractor )
-        description.should == "not_found"
-      end
-    end
-
-    context "when extractor is invalid" do
-      before do
-        @extractor = nil
-        @rdoc = ResourceDoc.new "invalid", nil
-      end
-
-      it "return not_controller message" do
-        description = @rdoc.send( :get_description, @extractor )
-        description.should == "not_controller"
-      end
-    end
-  end
-
-  context "when check get_actions_doc function" do
+  context "when call simple name" do
     before do
-      @controller_extractor = ControllerExtractor.new "users_controller.rb"
-      @actions_info = @controller_extractor.get_actions_info
+      @resource_name = "One/Two"
+      @rdoc = ResourceDoc.new @resource_name, nil
+    end
+
+    it "returns name without '/'" do
+      @rdoc.simple_name.should == "OneTwo"
+    end
+  end
+
+  context "when call get_controller_extractor function" do
+    before do
+      ResourceDoc.any_instance.stub( :generate_info ).and_return( true )
+    end
+
+    context "when exists controller file" do
+      before do
+        @rdoc = ResourceDoc.new "users", nil
+      end
+
+      it "returns new ControllerExtractor" do
+        @rdoc.send( :get_controller_extractor ).class.should == ControllerExtractor
+      end
+    end
+
+    context "when exists controller file" do
+      before do
+        @rdoc = ResourceDoc.new "notexists", nil
+      end
+
+      it "returns new ControllerExtractor" do
+        @rdoc.send( :get_controller_extractor ).should == nil
+      end
+    end
+  end
+
+  context "when call get_actions_doc function" do
+    before do
+      ResourceDoc.any_instance.stub( :generate_info ).and_return( true )
       @rdoc = ResourceDoc.new "users", nil
     end
 
-    it "should return ActionDoc array" do
-      actions_doc = @rdoc.send( :get_actions_doc, @controller_extractor )
-      actions_doc.class.should == Array
-      actions_doc.each{ |ad| ad.class.should == ActionDoc }
+    context "when don't pass extractor" do
+      before do
+        @actions_doc = @rdoc.send( :get_actions_doc, @routes_actions_info, nil )
+      end
+
+      it "returns ActionDoc array" do
+        @actions_doc.class.should == Array
+        @actions_doc.each{ |ad| ad.class.should == ActionDoc }
+      end
+
+      it "don't returns description" do
+        @actions_doc.each{ |ad| ad.description.should == nil }
+      end
+
+      it "ActionDoc array has correct info" do
+        actions = @actions_doc.map{ |ad| ad.action }
+        methods = @actions_doc.map{ |ad| ad.action_method }
+
+        # Example of routes_actions_info: { index => [{},{}], show => [{}] }
+        @routes_actions_info.each do |action_info|
+          actions.should be_include( action_info[:action] )
+          methods.should be_include( action_info[:method] )
+        end
+      end
+    end
+
+    context "when pass resource action info (routes) and extractor" do
+      before do
+        @actions_doc = @rdoc.send( :get_actions_doc, @routes_actions_info, @extractor )
+      end
+
+      it "returns ActionDoc array" do
+        @actions_doc.class.should == Array
+        @actions_doc.each{ |ad| ad.class.should == ActionDoc }
+      end
+
+      it "returns info extracted from controller" do
+        @actions_doc.each do |action_doc|
+          info = @extractor.get_action_info( action_doc.action )
+          action_doc.description.should == info['description']
+        end
+      end
     end
   end
 
-  context "when check get_actions_urls" do
-    before do
-      @action = "index"
-      @urls = [ '/url1', '/url2', '/url3', '/url4' ]
-      routes_info = [ { :action => 'index', :resource => "users", :url => @urls[0] },
-        { :action => 'index', :resource => "users", :url => @urls[1] },
-        { :action => 'show', :resource => "users", :url => @urls[2] },
-        { :action => 'index', :resource => "albums", :url => @urls[3] } ]
-
-      @rdoc = ResourceDoc.new :users, routes_info
+  context "when create new valid instance" do
+    before :all do
+      @resource_name = "users"
+      @rdoc = ResourceDoc.new @resource_name, @routes_actions_info
     end
 
-    it "should return correct urls" do
-      action_urls = @rdoc.send( :get_action_urls, @action )
-      action_urls.should be_include( @urls[0] )
-      action_urls.should be_include( @urls[1] )
-      action_urls.should_not be_include( @urls[2] )
-      action_urls.should_not be_include( @urls[3] )
+    it "saves it correctly" do
+      @rdoc.name.should == @resource_name
+      @rdoc.controller_file.should == @resource_name + '_controller.rb'
+    end
+
+    it "set correct description" do
+      @rdoc.description.should == @extractor.get_resource_info['description']
+    end
+
+    it "set correct actions_doc" do
+      @rdoc.actions_doc.class.should == Array
+      @rdoc.actions_doc.each{ |ad| ad.class.should == ActionDoc }
     end
   end
 end
