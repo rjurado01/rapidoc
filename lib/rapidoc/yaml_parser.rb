@@ -22,7 +22,7 @@ module Rapidoc
         end
       end
 
-      return info.first
+      info.first ? info.first : {}
     end
 
     ##

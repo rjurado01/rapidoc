@@ -32,8 +32,9 @@ module Rapidoc
     #
     def get_resources
       routes_doc = get_routes_doc
+      resources_names = routes_doc.get_resources_names - resources_black_list
 
-      routes_doc.get_resources_names.map do |resource|
+      resources_names.map do |resource|
         ResourceDoc.new( resource, routes_doc.get_actions_route_info( resource ) )
       end
     end

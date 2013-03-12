@@ -19,6 +19,11 @@
   padding-bottom: 14px;
 }
 
+.pad-description {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
 .small {
   display: block;
   color: #999;
@@ -27,4 +32,12 @@
 
 .action-options {
   margin-top: 25px;
+}
+
+.label-info2 {
+  background-color: #4d657d
+}
+
+.label-info2 {
+  background-color: #4d657d
 }

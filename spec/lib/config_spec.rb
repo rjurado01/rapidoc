@@ -116,4 +116,24 @@ describe Rapidoc::Config do
       end
     end
   end
+
+  context "when call resources_black_list" do
+    context "when config file has resources_black_list" do
+      it "returns array with resources" do
+        File.open("#{config_dir}/rapidoc.yml", 'w') do |file|
+          file.write "resources_black_list: images, albums"
+        end
+        load_config
+        resources_black_list.should == [ :images, :albums ]
+      end
+    end
+
+    context "when config file has not resources_black_list" do
+      it "returns empty array" do
+        File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }   
+        load_config
+        resources_black_list.should == []
+      end
+    end
+  end
 end

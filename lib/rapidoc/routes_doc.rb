@@ -82,11 +82,12 @@ module Rapidoc
     def get_resource_name( url )
       new_url = url.gsub( '(.:format)', '' )
 
-      return $1 if new_url =~ /\/(\w*)\/:id$/
-      return $1 if new_url =~ /\/(\w*)\/:id\/edit$/
-      return $1 if new_url =~ /^\/(\w*)$/
-      return $1 if new_url =~ /\/:\w*id\/(\w*)$/
-      return $1 if new_url =~ /\/(\w*)\/\w*$/
+      return $1 if new_url =~ /\/(\w+)\/:id$/
+      return $1 if new_url =~ /\/(\w+)\/:id\/edit$/
+      return $1 if new_url =~ /^\/(\w+)$/
+      return $1 if new_url =~ /\/:\w*id\/(\w+)$/
+      return $1 if new_url =~ /\/(\w+)\/\w+$/
+      return url
     end
   end
 end

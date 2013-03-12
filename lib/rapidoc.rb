@@ -7,6 +7,7 @@ require "rapidoc/resource_doc"
 require "rapidoc/action_doc"
 require "rapidoc/controller_extractor"
 require "rapidoc/resources_extractor"
+require "rapidoc/param_errors"
 require "rapidoc/templates_generator"
 require "rapidoc/yaml_parser"
 
@@ -15,6 +16,7 @@ module Rapidoc
   include Config
   include ResourcesExtractor
   include TemplatesGenerator
+  include ParamErrors
   include YamlParser
 
   METHODS = [ "GET", "PUT", "DELETE", "POST" ]

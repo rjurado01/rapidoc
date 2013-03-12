@@ -72,6 +72,13 @@ describe RoutesDoc do
         name.should == 'users'
       end
     end
+
+    context "when is root" do
+      it "returns correct resource name" do
+        name = @routes_doc.send( :get_resource_name, '/' )
+        name.should == '/'
+      end
+    end
   end
 
   context "when we call get_resources_names function" do

@@ -27,6 +27,7 @@ module Rapidoc
 
       add_controller_info( controller_info ) if controller_info
       load_examples( examples_route ) if examples_route
+      load_params_errors if default_errors? and @params
     end
 
     def has_controller_info
@@ -41,7 +42,7 @@ module Rapidoc
       @authentication   = controller_info["requires_authentication"]
       @params           = controller_info["params"]
       @http_responses   = get_http_responses controller_info["http_responses"]
-      @errors           = controller_info["errors"] ? controller_info["errors"] : []
+      @errors           = controller_info["errors"] ? controller_info["errors"].dup : []
       @controller_info  = true
     end
 
@@ -55,15 +56,10 @@ module Rapidoc
       codes.map{ |c| HttpResponse.new c } if codes
     end
 
-    def load_params_error
+    def load_params_errors
       @params.each do |param|
-        if param["required"] and param["required"] == true
-          @errors << { "object" => param["name"], "message" => "blank" }
-        end
-
-        if param["inclusion"]
-          @errors << { "object" => param["name"], "message" => "inclusion" }
-        end
+        @errors << get_error_info( param["name"], "required" ) if param["required"]
+        @errors << get_error_info( param["name"], "inclusion" ) if param["inclusion"]
       end
     end
 

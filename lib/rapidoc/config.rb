@@ -41,6 +41,22 @@ module Rapidoc
       end
     end
 
+    def resources_black_list
+      if @@config and @@config['resources_black_list']
+        @@config['resources_black_list'].gsub(' ', '').split(',').map(&:to_sym)
+      else
+        return []
+      end
+    end
+
+    def default_errors?
+      @@config and @@config['default_errors'] == true
+    end
+
+    def default_errors
+      @@config and @@config['errors'] ? @@config['errors'] : nil
+    end
+
     # return the directory where rapidoc generates the doc
     def target_dir( f = nil )
       if File.exists?( config_file_path )

@@ -40,8 +40,9 @@ describe "When check HttpResponse class" do
   context "when call get_label function" do
     context "when pass know code" do
       before do
-        @codes = [ 200, 201, 401, 422 ]
-        @labels = [ 'label-info', 'label-success', 'label-warning', 'label-important' ]
+        @codes = [ 200, 201, 204, 401, 403, 422, 404 ]
+        @labels = [ 'label-info', 'label-success', 'label-info2', 'label-warning',
+          'label-warning2', 'label-important', 'label-inverse' ]
       end
 
       it "should return correct labels" do
@@ -54,7 +55,7 @@ describe "When check HttpResponse class" do
 
     context "when pass unknow code" do
       it "should return correct label" do
-        http_response = HttpResponse.new 204
+        http_response = HttpResponse.new 400
         http_response.get_label.should == 'label'
       end
     end

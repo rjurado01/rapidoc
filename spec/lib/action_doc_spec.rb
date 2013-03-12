@@ -110,38 +110,65 @@ describe ActionDoc do
       end
 
       it "return all errors" do
-        #@errors.size.should == 5
         @errors.size.should == 1
       end
 
       it "return password errors" do
         params_errors = @errors.select{ |error| error["object"] == 'password' }
         messages = params_errors.map{ |m| m["message"] }
-        #messages.should be_include( 'blank' )
         messages.should be_include( 'too_short' )
       end
-
-=begin TODO
-      it "return job include error" do
-        params_errors = @errors.select{ |error| error["object"] == 'job' }
-        messages = params_errors.map{ |m| m["message"] }
-        messages.should be_include( 'inclusion' )
-      end
-=end
     end
 
-=begin TODO
-    context "when action hasn't custom errors" do
-      before :all do
-        resource = get_resources.select{ |r| r.name == "users" }.first
-        action_doc = resource.actions_doc.select{ |ad| ad.action == "show" }.first
-        @errors = action_doc.errors
+    context "when default errors are actived" do
+      context "when use default messages and descriptions" do
+        before :all do
+          File.open("#{config_dir}/rapidoc.yml", 'w') do |file|
+            file.write "default_errors: true"
+          end
+
+          load_config
+          action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
+          @errors = action_doc.errors
+        end
+
+        it "return all errors" do
+          @errors.size.should == 5
+        end
+
+        it "returns correct messages" do
+          messages = @errors.map{ |error| error["message"] }
+          messages.should be_include( 'blank' )
+          messages.should be_include( 'too_short' )
+          messages.should be_include( 'inclusion' )
+        end
       end
 
-      it "return all errors" do
-        @errors.size.should == 1
+      context "when use config messages and descriptions" do
+        before :all do
+          File.open( config_file_path, 'w') do |file| 
+            file.write "default_errors: true\n"
+            file.write "errors:\n"
+            file.write "  required:\n    message: \"m1\"\n    description: \"d1\"\n"
+            file.write "  inclusion:\n    message: \"m2\"\n    description: \"d2\"\n"
+          end
+
+          load_config
+          action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
+          @errors = action_doc.errors
+        end
+
+        it "return all errors" do
+          @errors.size.should == 5
+        end
+
+        it "returns correct messages" do
+          messages = @errors.map{ |error| error["message"] }
+          messages.should be_include( 'm1' )
+          messages.should be_include( 'too_short' )
+          messages.should be_include( 'm2' )
+        end
       end
     end
-=end
   end
 end

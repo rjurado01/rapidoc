@@ -50,11 +50,9 @@
           </div>
           <div id="collapse{{this.simple_name}}" class="accordion-body collapse">
             <div class="accordion-inner">
-              {{# if this.description}}
-                {{this.description}}</br></br>
-              {{else}}
-                </br>
-              {{/if}}
+              <div class="pad-description">
+                {{this.description}}
+              </div>
               <table class="table table-hover">
               {{#each this.actions_doc}}
                   {{#each this.urls}}

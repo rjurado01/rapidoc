@@ -22,14 +22,16 @@ module Rapidoc
           'OK'
         when 201
           'Created'
+        when 204
+          'No content'
         when 401
           'Unauthorized'
+        when 403
+          'Forbidden'
         when 404
           'Not found'
         when 422
           'Unprocessable Entity'
-        when 403
-          'Forbidden'
         else
           ''
       end
@@ -41,10 +43,16 @@ module Rapidoc
           'label label-info'
         when 201
           'label label-success'
+        when 204
+          'label label-info2'
         when 401
           'label label-warning'
+        when 403
+          'label label-warning2'
         when 422
           'label label-important'
+        when 404
+          'label label-inverse'
         else
           'label'
       end
