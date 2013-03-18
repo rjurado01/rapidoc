@@ -81,6 +81,10 @@ module Rapidoc
       end
     end
 
+    def default_response_formats
+      @@config['response_formats'] if @@config
+    end
+
     private
 
     def target_dir_from_config

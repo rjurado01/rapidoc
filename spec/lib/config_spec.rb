@@ -80,6 +80,22 @@ describe Rapidoc::Config do
     end
   end
 
+  context "when call default_response_formats" do
+    context "when config file has not response_formats" do
+      it "returns nil" do
+        default_response_formats.should == nil
+      end
+    end
+
+    context "when config file has response_formats" do
+      it "returns response formats" do
+        File.open( config_file_path, 'w') { |file| file.write "response_formats: json" }
+        load_config
+        default_response_formats.should == 'json'
+      end
+    end
+  end
+
   context "when call actions_dir" do
     context "when config file has a route" do
       before do

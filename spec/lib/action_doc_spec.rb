@@ -22,7 +22,6 @@ describe ActionDoc do
 
     extractor = ControllerExtractor.new "users_controller.rb"
     @controller_info = extractor.get_action_info( 'create' )
-    @action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
   end
 
   after :all do
@@ -30,6 +29,10 @@ describe ActionDoc do
   end
 
   context "when initialize ActionDoc" do
+    before :all do
+      @action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
+    end
+
     it "set correct action info" do
       @action_doc.action.should == @info[:action]
     end
@@ -52,7 +55,7 @@ describe ActionDoc do
 
     it "set correct http responses" do
       http_responses = @action_doc.send( :get_http_responses,
-                                         @controller_info["http_responses"] )
+                                        @controller_info["http_responses"] )
     end
 
     it "set correct requires authentication" do
@@ -74,100 +77,115 @@ describe ActionDoc do
     it "set correct example_res" do
       @action_doc.example_req.should == JSON.pretty_generate( @json_info )
     end
-  end
 
-  context "when executing get_http_responses method" do
-    before do
-      @codes = [ 200, 401 ]
-      @http_responses = @action_doc.send( :get_http_responses, @codes )
-    end
+    context "when executing get_http_responses method" do
+      before do
+        @codes = [ 200, 401 ]
+        @http_responses = @action_doc.send( :get_http_responses, @codes )
+      end
 
-    it "return new HttpResponse Array" do
-      @http_responses.each do |r|
-        r.class.should == HttpResponse
+      it "return new HttpResponse Array" do
+        @http_responses.each do |r|
+          r.class.should == HttpResponse
+        end
+      end
+
+      it "each HttpResponse element should include correct code" do
+        @http_responses.each_index do |i|
+          @http_responses[i].code.should == @codes[i]
+        end
+      end
+
+      it "each HttpResponse element should include description" do
+        @http_responses.each{ |http_r| http_r.methods.should be_include( :description ) }
+      end
+
+      it "each HttpResponse element should include label" do
+        @http_responses.each{ |http_r| http_r.methods.should be_include( :label ) }
       end
     end
 
-    it "each HttpResponse element should include correct code" do
-      @http_responses.each_index do |i|
-        @http_responses[i].code.should == @codes[i]
+    context "when checking errors" do
+      context "when action has custom errors" do
+        before :all do
+          @errors = @action_doc.errors
+        end
+
+        it "return all errors" do
+          @errors.size.should == 1
+        end
+
+        it "return password errors" do
+          params_errors = @errors.select{ |error| error["object"] == 'password' }
+          messages = params_errors.map{ |m| m["message"] }
+          messages.should be_include( 'too_short' )
+        end
       end
-    end
-
-    it "each HttpResponse element should include description" do
-      @http_responses.each{ |http_r| http_r.methods.should be_include( :description ) }
-    end
-
-    it "each HttpResponse element should include label" do
-      @http_responses.each{ |http_r| http_r.methods.should be_include( :label ) }
     end
   end
 
-  context "when checking errors" do
-    context "when action has custom errors" do
+  context "when default response formats are actived" do
+    before :all do
+      File.open("#{config_dir}/rapidoc.yml", 'w') do |file|
+        file.write "response_formats: xml"
+      end
+
+      load_config
+      @action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
+    end
+
+    it "returns default response formats" do
+      @action_doc.response_formats.should == 'xml'
+    end
+  end
+
+  context "when default errors are actived" do
+    context "when use default messages and descriptions" do
       before :all do
-        @errors = @action_doc.errors
+        File.open("#{config_dir}/rapidoc.yml", 'w') do |file|
+          file.write "default_errors: true"
+        end
+
+        load_config
+        action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
+        @errors = action_doc.errors
       end
 
       it "return all errors" do
-        @errors.size.should == 1
+        @errors.size.should == 6
       end
 
-      it "return password errors" do
-        params_errors = @errors.select{ |error| error["object"] == 'password' }
-        messages = params_errors.map{ |m| m["message"] }
+      it "returns correct messages" do
+        messages = @errors.map{ |error| error["message"] }
+        messages.should be_include( 'blank' )
         messages.should be_include( 'too_short' )
+        messages.should be_include( 'inclusion' )
       end
     end
 
-    context "when default errors are actived" do
-      context "when use default messages and descriptions" do
-        before :all do
-          File.open("#{config_dir}/rapidoc.yml", 'w') do |file|
-            file.write "default_errors: true"
-          end
-
-          load_config
-          action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
-          @errors = action_doc.errors
+    context "when use config messages and descriptions" do
+      before :all do
+        File.open( config_file_path, 'w') do |file| 
+          file.write "default_errors: true\n"
+          file.write "errors:\n"
+          file.write "  required:\n    message: \"m1\"\n    description: \"d1\"\n"
+          file.write "  inclusion:\n    message: \"m2\"\n    description: \"d2\"\n"
         end
 
-        it "return all errors" do
-          @errors.size.should == 5
-        end
-
-        it "returns correct messages" do
-          messages = @errors.map{ |error| error["message"] }
-          messages.should be_include( 'blank' )
-          messages.should be_include( 'too_short' )
-          messages.should be_include( 'inclusion' )
-        end
+        load_config
+        action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
+        @errors = action_doc.errors
       end
 
-      context "when use config messages and descriptions" do
-        before :all do
-          File.open( config_file_path, 'w') do |file| 
-            file.write "default_errors: true\n"
-            file.write "errors:\n"
-            file.write "  required:\n    message: \"m1\"\n    description: \"d1\"\n"
-            file.write "  inclusion:\n    message: \"m2\"\n    description: \"d2\"\n"
-          end
+      it "return all errors" do
+        @errors.size.should == 6
+      end
 
-          load_config
-          action_doc = ActionDoc.new( @info, @controller_info, examples_dir )
-          @errors = action_doc.errors
-        end
-
-        it "return all errors" do
-          @errors.size.should == 5
-        end
-
-        it "returns correct messages" do
-          messages = @errors.map{ |error| error["message"] }
-          messages.should be_include( 'm1' )
-          messages.should be_include( 'too_short' )
-          messages.should be_include( 'm2' )
-        end
+      it "returns correct messages" do
+        messages = @errors.map{ |error| error["message"] }
+        messages.should be_include( 'm1' )
+        messages.should be_include( 'too_short' )
+        messages.should be_include( 'm2' )
       end
     end
   end

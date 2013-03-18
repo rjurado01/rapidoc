@@ -38,7 +38,7 @@ module Rapidoc
 
     def add_controller_info( controller_info )
       @description      = controller_info["description"]
-      @response_formats = controller_info["response_formats"]
+      @response_formats = default_response_formats || controller_info["response_formats"]
       @authentication   = controller_info["requires_authentication"]
       @params           = controller_info["params"]
       @http_responses   = get_http_responses controller_info["http_responses"]
