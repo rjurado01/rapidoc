@@ -17,16 +17,25 @@ class UsersController < ApplicationController
   #   - 200
   #   - 401
   #   - 403
+  #   - 404
   #
   # params:
   #   - name: page
   #     description: number of page in pagination
   #     required: false
   #     type: Integer
+  #
   #   - name: limit
   #     description: number of elements by page in pagination
+  #     type: Integer
+  #
   #   - name: name
   #     description: name filter
+  #     type: String
+  #
+  #   - name: gender
+  #     description: gender filter
+  #     inclusion: male, female
   #
   # =end
   def index
@@ -35,64 +44,68 @@ class UsersController < ApplicationController
   end
 
   # =begin action
+  #
   # method: GET
   # action: show
-  # requires_authentication: no
+  # requires_authentication: yes
   # response_formats: json
   # description: Return an user.
-  #
-  # params:
-  #   - name: id
-  #     required: true
-  #     description: user id
-  #     type: String
   #
   # http_responses:
   #   - 200
   #   - 401
   #   - 403
+  #   - 404
+  #
   # =end
   def show
   end
 
   # =begin action
+  #
   # method: POST
   # action: create
-  # requires_authentication: yes
+  # requires_authentication: no
   # response_formats: json
   # description: Create new user.
   #
   # params:
   #   - name: name
-  #     type: string
+  #     type: String
   #     required: true
+  #     description: User name.
   #
   #   - name: email
-  #     type: string
+  #     type: String
   #     required: true
-  #     description: user email
+  #     description: User email.
   #
   #   - name: password
-  #     type: string
+  #     type: String
   #     required: true
-  #     description: >
-  #       must be 8 caracters
-  #       and be safe
+  #     description: > 
+  #       User password. It will be required in loggin.
+  #       Must be at least 8 caracters and be be safe.
   #
-  #   - name: job
-  #     type: string
-  #     required: false
-  #     inclusion: job1, job2, job3
+  #   - name: gender
+  #     type: String
+  #     required: true
+  #     inclusion: male, female
+  #     description: User gender.
+  #
+  #   - name: phone
+  #     type: Number
   #
   # errors:
   #   - object: password
   #     message: too_short
-  #     description: Password should has at least 4 characters.
+  #     description: Password must be at least 4 characters.
   #
   # http_responses:
   #   - 201
   #   - 401
   #   - 422
+  #   - 404
   #
   # =end
   def create

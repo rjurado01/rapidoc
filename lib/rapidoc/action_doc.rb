@@ -27,14 +27,14 @@ module Rapidoc
 
       add_controller_info( controller_info ) if controller_info
       load_examples( examples_route ) if examples_route
-      load_params_errors if default_errors? and @params
+      load_params_errors if default_errors? @action and @params
     end
 
     def has_controller_info
       @controller_info ? true : false
     end
 
-    private 
+    private
 
     def add_controller_info( controller_info )
       @description      = controller_info["description"]

@@ -43,7 +43,9 @@ module Rapidoc
       resources_doc.each do |resource|
         if resource.actions_doc
           resource.actions_doc.each do |action_doc|
-            create_action_template( get_action_template, action_doc )
+            if action_doc.has_controller_info
+              create_action_template( get_action_template, action_doc )
+            end
           end
         end
       end

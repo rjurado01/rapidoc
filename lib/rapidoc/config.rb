@@ -49,8 +49,9 @@ module Rapidoc
       end
     end
 
-    def default_errors?
-      @@config and @@config['default_errors'] == true
+    def default_errors?( action )
+      @@config and @@config['default_errors'] == true and
+      [ 'create', 'update' ].include? action
     end
 
     def default_errors

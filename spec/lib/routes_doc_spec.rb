@@ -73,6 +73,13 @@ describe RoutesDoc do
       end
     end
 
+    context "when is edit action from embeded resource" do
+      it "returns correct resource name" do
+        name = @routes_doc.send( :get_resource_name, '/users/password/edit(.:format)' )
+        name.should == 'users'
+      end
+    end
+
     context "when is root" do
       it "returns correct resource name" do
         name = @routes_doc.send( :get_resource_name, '/' )

@@ -61,6 +61,25 @@ describe Rapidoc::Config do
     end
   end
 
+  context "when call default_errors" do
+    before :all do
+      File.open( config_file_path, 'w') { |file| file.write "default_errors: true" }
+      load_config
+    end
+
+    context "when action is index" do
+      it "returns false" do
+        default_errors?( 'index' ).should == false
+      end
+    end
+
+    context "when action is create" do
+      it "returns true" do
+        default_errors?( 'create' ).should == true
+      end
+    end
+  end
+
   context "when call actions_dir" do
     context "when config file has a route" do
       before do

@@ -6,6 +6,7 @@ describe Rapidoc do
 
   before :all do
     create_structure
+    load_config
   end
 
   after :all do
