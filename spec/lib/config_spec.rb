@@ -15,20 +15,32 @@ describe Rapidoc::Config do
     config_dir('file.yml').should eql( ::Rails.root.to_s + '/config/rapidoc/file.yml' )
   end
 
-  it "controller_dir returns correct dir" do
-    controller_dir().should eql( ::Rails.root.to_s + '/app/controllers' )
-  end
-
-  it "controller_dir returns correct dir + file" do
-    controller_dir('file.rb').should eql( ::Rails.root.to_s + '/app/controllers/file.rb' )
-  end
-
   it "gem_templates_dir returns correct dir" do
     gem_templates_dir().should =~ /(.*)\/lib\/rapidoc\/templates/
   end
 
   it "gem_templates_dir returns correct dir + file" do
     gem_templates_dir('template.hbs').should  =~ /(.*)\/templates\/template\.hbs/
+  end
+
+  context "when call controller_dir" do
+    context "when use default route" do
+      it "controller_dir returns correct dir" do
+        controller_dir().should eql( ::Rails.root.to_s + '/app/controllers' )
+      end
+
+      it "controller_dir returns correct dir + file" do
+        controller_dir('file.rb').should eql( ::Rails.root.to_s + '/app/controllers/file.rb' )
+      end
+    end
+
+    context "when use config route" do
+      it "controller_dir returns correct dir" do
+        File.open( config_file_path, 'w') { |file| file.write "controllers_route: \"vim\"" }
+        load_config
+        controller_dir().should eql( ::Rails.root.to_s + '/vim' )
+      end
+    end
   end
 
   context "when call target_dir" do

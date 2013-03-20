@@ -23,7 +23,12 @@ module Rapidoc
     end
 
     def controller_dir(f = nil)
-      controller_dir ||= File.join( ::Rails.root.to_s, 'app/controllers' )
+      if @@config and @@config['controllers_route']
+        controller_dir = File.join( ::Rails.root.to_s, @@config['controllers_route'] )
+      else
+        controller_dir ||= File.join( ::Rails.root.to_s, 'app/controllers' )
+      end
+
       form_file_name controller_dir, f
     end
 
