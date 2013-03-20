@@ -91,7 +91,7 @@ describe RoutesDoc do
   context "when we call get_resources_names function" do
     it "returns all resources name" do
       @routes_doc.add_route( 'GET /users(.:format) users#index' )
-      @routes_doc.add_route( 'GET /images(.:format) users#index' )
+      @routes_doc.add_route( 'GET /images(.:format) images#index' )
       @routes_doc.get_resources_names.should == [ :images, :users ]
     end
   end

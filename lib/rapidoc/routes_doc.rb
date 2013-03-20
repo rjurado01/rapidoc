@@ -63,7 +63,8 @@ module Rapidoc
     # Add new route info to resource routes array with correct format
     #
     def add_resource_route( method, url, controller_action )
-      resource = get_resource_name( url )
+      #resource = get_resource_name( url )
+      resource = controller_action.split('#').first
       info =  {
         resource: resource,
         action: controller_action.split('#').last,
