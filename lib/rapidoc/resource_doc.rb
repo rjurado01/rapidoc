@@ -8,7 +8,7 @@ module Rapidoc
   # It includes an array of ActionDoc with each action information
   #
   class ResourceDoc
-    attr_reader :name, :description, :controller_file, :actions_doc 
+    attr_reader :name, :description, :controller_file, :actions_doc
 
     ##
     # @param resource_name [String] resource name
@@ -16,7 +16,7 @@ module Rapidoc
     #
     def initialize( resource_name, routes_actions_info )
       @name = resource_name.to_s
-      @controller_file = name.to_s + '_controller.rb'
+      @controller_file = name.to_s.pluralize + '_controller.rb'
 
       generate_info routes_actions_info
     end
@@ -55,7 +55,7 @@ module Rapidoc
 
     ##
     # @return [Array] all the resource ActionDoc
-    # 
+    #
     def get_actions_doc( routes_actions_info, extractor )
       routes_actions_info.map do |route_info|
         controller_info = extractor ? extractor.get_action_info( route_info[:action] ) : nil
