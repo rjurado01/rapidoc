@@ -1,6 +1,6 @@
 = Rapidoc
 
-REST API documentation generator for rails projects ( 0.03 version ).
+REST API documentation generator for rails projects ( 0.04 version ).
 
 This gem let you generate API documentation of your rails project in html format.
 It use routes information, _rapidoc_ _comments_ and json examples for generate
@@ -8,8 +8,8 @@ static html files.
 
 This is how the web interface look like:
 
-* Resources: http://www.v2imagen.com/RDv
-* Action-home: http://es.zimagez.com/zimage/capturadepantalla-170213-195254.php
+* Resources: example[http://www.v2imagen.com/RDv]
+* Action-home: example[http://es.zimagez.com/zimage/capturadepantalla-170213-195254.php]
 
 Rapidoc is based in restapi_doc gem: https://github.com/Alayho/restapi_doc
 
@@ -46,23 +46,16 @@ You can configure rapidoc in ``/config/rapidoc/rapidoc.yml`` file:
 The first three parameters are used for show information about project.
 
 The *doc_route* parameter let you specify where _rapidoc_ will generate all the
-documentation. If you don't put this parameter, rapidoc use default doc_route:
-
-  path_project/rapidoc
-
-If you add *doc_route:* *name* to config file, rapidoc create new folder called "name":
+documentation:
 
   path_project/name
 
 The *examples_route* parameter let you specify where _rapidoc_ will search for
-requests/responeses examples files. If you don't put this parameter, rapidoc
-use default examples_route:
-
-  path_project/config/rapidoc/examples
-
-If you add *examples_route:* *name* to config file, rapidoc create new folder called "name":
+requests/responeses examples files:
 
   path_project/name
+
+For more details please visit the Wiki[https://github.com/drinor/rapidoc/wiki].
 
 == Introducction
 
@@ -80,7 +73,7 @@ For get action documentation you need add an action block to resource controller
 
 Documentation blocks use *yaml* format.
 
-== Requests/responses examples
+== Requests/Responses examples
 
 Rapidoc let you define *json* files with requests/responses examples. You only need to add
 your files to *examples_route* and _rapidoc_ load it automatically in an action tab.
