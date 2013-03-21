@@ -124,6 +124,18 @@ describe "Action page"  do
         end
       end
     end
+
+    it "don't have tab 'Errors'" do
+      page.should_not have_css( "div#errors" )
+    end
+
+    it "don't have tab 'Request'" do
+      page.should_not have_css( "div#request" )
+    end
+
+    it "don't have tab 'Response'" do
+      page.should_not have_text( "div#response" )
+    end
   end
 
   context "when visit users_create.html page" do

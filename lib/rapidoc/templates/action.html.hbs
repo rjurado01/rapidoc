@@ -44,10 +44,10 @@
 
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home">Home</a></li>
-        <li><a href="#params">Params</a></li>
-        <li><a href="#errors">Errors</a></li>
-        <li><a href="#messages">Petition</a></li>
-        <li><a href="#settings">Answer</a></li>
+        {{#if action.params}}<li><a href="#params">Params</a></li>{{/if}}
+        {{#if action.errors}}<li><a href="#errors">Errors</a></li>{{/if}}
+        {{#if action.example_req}}<li><a href="#request">Request</a></li>{{/if}}
+        {{#if action.example_res}}<li><a href="#response">Response</a></li>{{/if}}
       </ul>
 
       <div class="tab-content">
@@ -92,6 +92,7 @@
           </table>
         </div>
 
+        {{#if action.params}}
         <div class="tab-pane my_tab" id="params">
           <table class="table table-hover" id="table-params">
             {{#each action.params}}
@@ -117,7 +118,9 @@
             <tr><td></td><td><td></td></tr>
           </table>
         </div>
+        {{/if}}
 
+        {{#if action.errors}}
         <div class="tab-pane my_tab" id="errors">
           <table class="table table-hover" id="table-errors">
             <tr>
@@ -134,14 +137,19 @@
             {{/each}}
           </table>
         </div>
+        {{/if}}
 
-        <div class="tab-pane my_tab" id="messages">
+        {{#if action.example_req}}
+        <div class="tab-pane my_tab" id="request">
           <pre>{{action.example_req }}</pre>
         </div>
+        {{/if}}
 
-        <div class="tab-pane my_tab" id="settings">
+        {{#if action.example_res}}
+        <div class="tab-pane my_tab" id="response">
           <pre>{{action.example_res }}</pre>
         </div>
+        {{/if}}
       </div>
 
       <script>
