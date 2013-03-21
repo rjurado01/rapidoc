@@ -39,21 +39,29 @@ module Rapidoc
     def add_controller_info( controller_info )
       @description      = controller_info["description"]
       @response_formats = default_response_formats || controller_info["response_formats"]
-      @authentication   = controller_info["requires_authentication"]
       @params           = controller_info["params"]
       @http_responses   = get_http_responses controller_info["http_responses"]
       @errors           = controller_info["errors"] ? controller_info["errors"].dup : []
+      @authentication   = get_authentication controller_info["authentication_required"]
       @controller_info  = true
+    end
+
+    def get_authentication( required_authentication )
+      if [ true, false ].include? required_authentication 
+        required_authentication
+      else
+        default_authentication
+      end
+    end
+
+    def get_http_responses codes
+      codes.map{ |c| HttpResponse.new c } if codes
     end
 
     def load_examples( examples_route )
       return unless File.directory? examples_route + "/"
       load_request examples_route
       load_response examples_route
-    end
-
-    def get_http_responses codes
-      codes.map{ |c| HttpResponse.new c } if codes
     end
 
     def load_params_errors

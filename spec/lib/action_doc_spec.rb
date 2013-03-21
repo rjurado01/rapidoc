@@ -59,11 +59,7 @@ describe ActionDoc do
     end
 
     it "set correct requires authentication" do
-      if @controller_info["requires_authentication"] == true
-        @action_doc.authentication.should == true
-      else
-        @action_doc.authentication.should == false
-      end
+      @action_doc.authentication.should == false
     end
 
     it "set correct file" do
@@ -119,6 +115,20 @@ describe ActionDoc do
           params_errors = @errors.select{ |error| error["object"] == 'password' }
           messages = params_errors.map{ |m| m["message"] }
           messages.should be_include( 'too_short' )
+        end
+      end
+    end
+
+    context "when call get_authentication function" do
+      context "when pass true/false" do
+        it "return correctly value" do
+          @action_doc.send( :get_authentication, false ).should == false
+          @action_doc.send( :get_authentication, true ).should == true
+        end
+      end
+      context "when pass nil" do
+        it "return correctly default value (true)" do
+          @action_doc.send( :get_authentication, nil ).should == true
         end
       end
     end

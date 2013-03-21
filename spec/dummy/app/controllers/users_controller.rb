@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   # =begin action
   # method: GET
   # action: index
-  # requires_authentication: no
+  # authentication_required: true
   # response_formats: json
   # description: Return all users of the system.
   #
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   #
   # method: GET
   # action: show
-  # requires_authentication: yes
+  # authentication_required: yes
   # response_formats: json
   # description: Return an user.
   #
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
   #
   # method: POST
   # action: create
-  # requires_authentication: no
+  # authentication_required: false
   # response_formats: json
   # description: Create new user.
   #

@@ -59,6 +59,14 @@ module Rapidoc
       [ 'create', 'update' ].include? action
     end
 
+    def default_authentication
+      if @@config and [ true, false ].include? @@config['default_authentication']
+        @@config['default_authentication']
+      else
+        true
+      end
+    end
+
     def default_errors
       @@config and @@config['errors'] ? @@config['errors'] : nil
     end
