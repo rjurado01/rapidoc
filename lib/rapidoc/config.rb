@@ -32,6 +32,10 @@ module Rapidoc
       form_file_name controller_dir, f
     end
 
+    def controllers_extension
+      ( @@config and @@config['controllers_route'] ) ? '.yml' : '.rb'
+    end
+
     def config_file_path
       config_dir 'rapidoc.yml'
     end

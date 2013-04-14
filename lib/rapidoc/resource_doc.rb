@@ -16,7 +16,7 @@ module Rapidoc
     #
     def initialize( resource_name, routes_actions_info )
       @name = resource_name.to_s
-      @controller_file = name.to_s.pluralize + '_controller.rb'
+      @controller_file = name.to_s.pluralize + '_controller' + controllers_extension
 
       generate_info routes_actions_info
     end

@@ -73,5 +73,26 @@ describe ControllerExtractor do
       lambda{ ControllerExtractor.new( "no_file" ) }.should raise_error
     end
   end
+
+  context "when check controllers_name" do
+    context "when use default controllers route" do
+      it "use .rb extension for controllers files" do
+        ResourceDoc.any_instance.stub( :generate_info ).and_return( true )
+        resource_doc = ResourceDoc.new( 'user', nil )
+        resource_doc.controller_file.should == "users_controller.rb"
+      end
+    end
+
+    context "when use custom controllers route" do
+      it "use .yml extension for controllers files" do
+        File.open( config_file_path, 'w') { |file| file.write "controllers_route: \"vim\"" }
+        load_config
+
+        ResourceDoc.any_instance.stub( :generate_info ).and_return( true )
+        resource_doc = ResourceDoc.new( 'user', nil )
+        resource_doc.controller_file.should == "users_controller.yml"
+      end
+    end
+  end
 end
 
