@@ -17,8 +17,8 @@ module Rapidoc
       lines = IO.readlines( controller_dir( controller_file ) )
       blocks = extract_blocks( lines )
 
-      @resource_info = YamlParser.extract_resource_info( lines, blocks )
-      @actions_info = YamlParser.extract_actions_info( lines, blocks )
+      @resource_info = YamlParser.extract_resource_info( lines, blocks, controller_file )
+      @actions_info = YamlParser.extract_actions_info( lines, blocks, controller_file )
     end
 
     def get_actions_info
