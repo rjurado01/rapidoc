@@ -109,23 +109,42 @@ describe ResourceDoc do
   end
 
   context "when create new valid instance" do
-    before :all do
-      @resource_name = "users"
-      @rdoc = ResourceDoc.new @resource_name, @routes_actions_info
+    context "when use normal sintax" do
+      before :all do
+        @resource_name = "users"
+        @rdoc = ResourceDoc.new @resource_name, @routes_actions_info
+      end
+
+      it "saves it correctly" do
+        @rdoc.name.should == @resource_name
+        @rdoc.controller_file.should == @resource_name + '_controller.rb'
+      end
+
+      it "set correct description" do
+        @rdoc.description.should == [ @extractor.get_resource_info['description'] ]
+      end
+
+      it "set correct actions_doc" do
+        @rdoc.actions_doc.class.should == Array
+        @rdoc.actions_doc.each{ |ad| ad.class.should == ActionDoc }
+      end
     end
 
-    it "saves it correctly" do
-      @rdoc.name.should == @resource_name
-      @rdoc.controller_file.should == @resource_name + '_controller.rb'
-    end
+    context "when description is an array" do
+      before :all do
+        @file_name = controller_dir 'resources_controller.rb'
+        content = "# =begin resource\n# description:\n#   - Info1\n#   - Info2\n# =end\n"
+        File.open( @file_name, 'w') { |file| file.write content }
+        @rdoc = ResourceDoc.new "resource", []
+      end
 
-    it "set correct description" do
-      @rdoc.description.should == @extractor.get_resource_info['description']
-    end
+      after :all do
+        File.delete( @file_name )
+      end
 
-    it "set correct actions_doc" do
-      @rdoc.actions_doc.class.should == Array
-      @rdoc.actions_doc.each{ |ad| ad.class.should == ActionDoc }
+      it "set correct description" do
+        @rdoc.description.should == [ 'Info1', 'Info2' ]
+      end
     end
   end
 end

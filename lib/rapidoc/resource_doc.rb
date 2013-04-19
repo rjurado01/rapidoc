@@ -38,6 +38,9 @@ module Rapidoc
         extractor = get_controller_extractor
         @description = extractor.get_resource_info['description'] if extractor
         @actions_doc =  get_actions_doc( routes_info, extractor )
+
+        # template need that description will be an array
+        @description = [ @description ] unless @description.class == Array
       end
     end
 
