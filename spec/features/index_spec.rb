@@ -57,7 +57,9 @@ describe "Index page" do
 
     it "contains the correct description" do
       @resources.each do |resource|
-        page.should have_text(resource.description)
+        resource.description.each do |paragraph|
+          page.should have_text( paragraph )
+        end
       end
     end
   end
