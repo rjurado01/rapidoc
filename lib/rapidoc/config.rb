@@ -102,6 +102,10 @@ module Rapidoc
       @@config['response_formats'] if @@config
     end
 
+    def trace?
+      @@config and @@config['trace'] == true ? true : false
+    end
+
     private
 
     def target_dir_from_config

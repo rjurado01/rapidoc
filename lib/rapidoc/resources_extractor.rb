@@ -35,6 +35,7 @@ module Rapidoc
       resources_names = routes_doc.get_resources_names - resources_black_list
 
       resources_names.map do |resource|
+        puts "Generating #{resource} documentation..." if trace?
         ResourceDoc.new( resource, routes_doc.get_actions_route_info( resource ) )
       end
     end
