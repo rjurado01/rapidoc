@@ -11,10 +11,19 @@ module Rapidoc
     end
 
     def add_route( route )
-      if route.split.size == 4
+      if route.split.size > 3
         method, url, controller_action = route.split.slice(1, 3)
+      elsif route.split.size == 2
+        url, controller_action = route.split
       else
         method, url, controller_action = route.split
+      end
+
+      # check when method is not specified
+      unless controller_action.include? '#'
+        controller_action = url
+        url = method
+        method = nil
       end
 
       add_resource_route( method, url, controller_action )

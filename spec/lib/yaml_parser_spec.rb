@@ -50,7 +50,7 @@ describe Rapidoc::YamlParser do
       end
     end
 
-    context "when there is an error in the block" do
+    context "when there is an error in a description" do
       before :all do
         @blocks2 = [ { init: 0, end: 2 } ]
         @lines2 = [

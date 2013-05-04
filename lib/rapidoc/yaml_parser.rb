@@ -47,7 +47,7 @@ module Rapidoc
           
           begin
             info << YAML.load( lines[ b[:init] + 1, n_lines ].join.gsub(/\ *#/, '') )
-          rescue SyntaxError => e
+          rescue Exception => e
             puts "Error parsing block in #{file_name} file [#{b[:init]} - #{b[:end]}]"
           end
         end

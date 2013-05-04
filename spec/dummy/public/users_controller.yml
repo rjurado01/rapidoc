@@ -1,0 +1,6 @@
+# =begin action
+http_status:
+  - 201
+  #params:
+  - name: 'name'
+# =end

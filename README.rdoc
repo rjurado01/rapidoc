@@ -1,6 +1,6 @@
 = Rapidoc
 
-REST API documentation generator for rails projects ( 0.05 version ).
+REST API documentation generator for rails projects ( 0.06 version ).
 
 This gem let you generate API documentation of your rails project in html format.
 It uses routes information, rapidoc comments and json examples for generate
@@ -124,6 +124,10 @@ For more details and options please visit the Wiki[https://github.com/drinor/rap
 * When you are in an action page, you can click the resource name and go back to the resources page with resource selected.
 
 * If there is an error in your documentation, rapidoc show you an error message with the file name that contains the error and block lines.
+
+* Trace mode ( configuration[https://github.com/drinor/rapidoc/wiki/Configuration] ).
+
+* Simple and intuitive navigation.
 
 == Contributing
 

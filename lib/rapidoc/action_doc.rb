@@ -21,9 +21,11 @@ module Rapidoc
     def initialize( routes_info, controller_info, examples_route )
       @resource         = routes_info[:resource].to_s
       @action           = routes_info[:action].to_s
-      @action_method    = routes_info[:method].to_s
+      @action_method    = routes_info[:method].to_s || '-----'
       @urls             = routes_info[:urls]
       @file             = @resource + '_' + @action
+
+      puts " - Generating #{@action} action documentation..." if trace?
 
       add_controller_info( controller_info ) if controller_info
       load_examples( examples_route ) if examples_route
@@ -37,6 +39,7 @@ module Rapidoc
     private
 
     def add_controller_info( controller_info )
+      puts "  + Adding info from controller..." if trace?
       @description      = controller_info["description"]
       @response_formats = default_response_formats || controller_info["response_formats"]
       @params           = controller_info["params"]
@@ -74,12 +77,14 @@ module Rapidoc
     def load_request( examples_route )
       file = examples_route + '/' + @resource + '_' + @action + '_request.json'
       return unless File.exists?( file )
+      puts "  + Loading request examples..." if trace?
       File.open( file ){ |f| @example_req = JSON.pretty_generate( JSON.parse(f.read) ) }
     end
 
     def load_response( examples_route )
       file = examples_route + '/' + @resource + '_' + @action + '_response.json'
       return unless File.exists?( file )
+      puts "  + Loading response examples..." if trace?
       File.open( file ){ |f| @example_res = JSON.pretty_generate( JSON.parse(f.read) ) }
     end
   end

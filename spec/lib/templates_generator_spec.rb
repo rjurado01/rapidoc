@@ -4,12 +4,13 @@ include Rapidoc
 
 describe TemplatesGenerator do
 
-  before :all do
-    create_structure
+  before do
+    reset_structure
+    load_config
   end
 
-  after :all do
-    remove_doc
+  after do
+    #remove_doc
   end
 
   context "when call generate_index_template" do
@@ -35,8 +36,10 @@ describe TemplatesGenerator do
     it "should create new action.html file for each action"do
       @resources.each do |resource|
         resource.actions_doc.each do |action_doc|
-          route = actions_dir + "/#{resource.name}_#{action_doc.action}.html"
-          File.exists?( route ).should == true
+          if action_doc.has_controller_info
+            route = actions_dir + "/#{resource.name}_#{action_doc.action}.html"
+            File.exists?( route ).should == true
+          end
         end
       end
     end

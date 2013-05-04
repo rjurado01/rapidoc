@@ -69,7 +69,7 @@ describe Rapidoc::ResourcesExtractor do
 
     it "return correct order" do
       names = @resources.map(&:name)
-      names.should == [ "albums", "images", "users" ]
+      names.should == [ "albums", "images", "testing", "users" ]
     end
 
     context "when check resource with controller" do

@@ -105,14 +105,52 @@ describe RoutesDoc do
   end
 
   context "when we call add_route function" do
-    before do
-      @route = 'GET /users(.:format) users#index'
+    context "when route has 3 normal elements" do
+      before do
+        @route = 'GET /users(.:format) users#index'
+      end
+
+      it "calls add_resource_route function with correct params" do
+        @routes_doc.should_receive( :add_resource_route ).
+          with( 'GET', '/users(.:format)', 'users#index' )
+        @routes_doc.add_route( @route )
+      end
     end
 
-    it "calls add_resource_route function with correct params" do
-      @routes_doc.should_receive( :add_resource_route ).
-        with( 'GET', '/users(.:format)', 'users#index' )
-      @routes_doc.add_route( @route )
+    context "when route has 3 elements" do
+      before do
+        @route = '/users/:id(.:format) users#index {:id=>/[A-Z]\d{5}/}'
+      end
+
+      it "calls add_resource_route function with correct params" do
+        @routes_doc.should_receive( :add_resource_route ).
+          with( nil, '/users/:id(.:format)', 'users#index' )
+        @routes_doc.add_route( @route )
+      end
+    end
+
+    context "when route has 4 elements" do
+      before do
+        @route = 'user /users/:id(.:format) users#index {:id=>/[A-Z]\d{5}/}'
+      end
+
+      it "calls add_resource_route function with correct params" do
+        @routes_doc.should_receive( :add_resource_route ).
+          with( nil, '/users/:id(.:format)', 'users#index' )
+        @routes_doc.add_route( @route )
+      end
+    end
+
+    context "when route has 2 elements" do
+      before do
+        @route = '/users/:id(.:format) users#index'
+      end
+
+      it "calls add_resource_route function with correct params" do
+        @routes_doc.should_receive( :add_resource_route ).
+          with( nil, '/users/:id(.:format)', 'users#index' )
+        @routes_doc.add_route( @route )
+      end
     end
   end
 

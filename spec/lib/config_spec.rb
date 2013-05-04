@@ -23,6 +23,18 @@ describe Rapidoc::Config do
     gem_templates_dir('template.hbs').should  =~ /(.*)\/templates\/template\.hbs/
   end
 
+  context "when call trace?" do
+    it "returns false with default options" do
+      trace?.should == false
+    end
+
+    it "returns true when config has trace=true" do
+      File.open( config_file_path, 'w') { |file| file.write "trace: true" }
+      load_config
+      trace?.should == true
+    end
+  end
+
   context "when call controller_dir" do
     context "when use default route" do
       it "controller_dir returns correct dir" do

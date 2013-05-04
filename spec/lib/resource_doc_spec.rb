@@ -4,6 +4,8 @@ include Rapidoc
 
 describe ResourceDoc do
   before :all do
+    reset_structure
+    load_config
     @extractor = ControllerExtractor.new "users_controller.rb"
     @routes_actions_info = get_routes_doc.get_actions_route_info( :users )
   end
