@@ -15,8 +15,8 @@ module Rapidoc
     # @param routes_doc [RoutesDoc] routes documentation
     #
     def initialize( resource_name, routes_actions_info )
-      @name = resource_name.to_s
-      @controller_file = name.to_s.pluralize + '_controller' + controllers_extension
+      @name = resource_name.to_s.split('/').last
+      @controller_file = resource_name.to_s.pluralize + '_controller' + controllers_extension
 
       generate_info routes_actions_info
     end
