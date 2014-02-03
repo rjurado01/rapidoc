@@ -28,7 +28,9 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="index.html">Resources</a></li>
-              <li><a  target="_blank" href="https://github.com/drinor/rapidoc.git">Contact</a></li>
+              {{#if info.contact}}
+                <li><a  target="_blank" href="{{info.contact}}">Contact</a></li>
+              {{/if}}
             </ul>
           </div>
         </div>
