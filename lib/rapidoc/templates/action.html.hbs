@@ -97,6 +97,7 @@
         {{#if action.params}}
         <div class="tab-pane my_tab" id="params">
           <table class="table table-hover" id="table-params">
+            <tr><th>Name</th><th>Type</th><th>Description</th><th>Format</th></tr>
             {{#each action.params}}
               <tr>
                 <td>
@@ -115,9 +116,10 @@
                   {{/if}}
                 </td>
                 <td>{{this.description}}</td>
+                <td>{{this.format}}</td>
               </tr>
             {{/each}}
-            <tr><td></td><td><td></td></tr>
+            <tr><td></td><td><td></td><td></td></tr>
           </table>
         </div>
         {{/if}}
