@@ -83,7 +83,7 @@ module Rapidoc
     end
 
     def load_response( examples_route )
-      file = examples_route + '/' + @resource + '_' + @action + '_response.json'
+      file = examples_route + '/' + @resource + '/' + @action + '_response.json'
       return unless File.exists?( file )
       puts "  + Loading response examples..." if trace?
       File.open( file ){ |f| @example_res = JSON.pretty_generate( JSON.parse(f.read) ) }
