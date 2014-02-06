@@ -55,6 +55,11 @@ module Rapidoc
       result = template.call( :info => rapidoc_config, :action => action_doc )
       resource = action_doc.resource.split('/').last
       action = action_doc.action
+      dir_name = File.dirname(actions_dir("#{resource}"))
+      dir_name += "/#{resource}"
+      unless File.directory?(dir_name)
+        FileUtils.mkdir_p(dir_name)
+      end
       File.open( actions_dir("#{resource}/#{action}.html"), 'w' ) { |file| file.write result }
     end
 

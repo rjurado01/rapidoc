@@ -25,13 +25,15 @@ module Rapidoc
         when 204
           'No content'
         when 401
-          'Unauthorized'
+          'Access Denied'
         when 403
           'Forbidden'
         when 404
           'Not found'
         when 422
           'Unprocessable Entity'
+        when 400
+          'Bad Request'
         else
           ''
       end

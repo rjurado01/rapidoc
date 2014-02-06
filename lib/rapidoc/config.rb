@@ -47,6 +47,11 @@ module Rapidoc
     def load_config
       if File.exists?( config_file_path )
         @@config = YAML.load( File.read( config_file_path ) )
+        resources_path = File.join( ::Rails.root.to_s, @@config["doc_route"].to_s )
+        dir_name = "#{resources_path}"
+        unless File.directory?(dir_name)
+          FileUtils.mkdir_p(dir_name)
+        end
       end
     end
 
