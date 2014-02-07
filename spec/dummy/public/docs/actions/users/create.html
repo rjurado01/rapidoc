@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Rapidoc - Action</title>
+    <meta name="description" content="Artículo en GenbetaDev sobre Bootstrap 2.0">
+    <meta name="author" content="Rafael Jurado González" >
+    <link href="//assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//assets/css/rapidoc.css" rel="stylesheet">
+    <link href="//assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="//assets/js/jquery-1.9.0.min.js"></script>
+    <script src="//assets/js/bootstrap.min.js"></script>
+    <script src="//assets/js/json2.js"></script>
+    <style>
+      body { padding-top: 60px; }
+    </style>
+  </head>
+  <body onload="prueba()">
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#"></a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href="//index.html">Resources</a></li>
+              <li class="active"><a href="#">Action</a></li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="page-header">
+        <h1><a href="//index.html?collapse=collapseusers">users</a></h1>
+      </div>
+
+      <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#home">Home</a></li>
+        <li><a href="#params">Params</a></li>
+        <li><a href="#errors">Errors</a></li>
+        
+        
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active my_tab" id="home">
+          <p>
+            Create new user.
+          </p>
+            <table class="table table-hover action-options">
+            <tr>
+              <td>Action</td><td>create</td>
+            </tr>
+            <tr>
+              <td>Method</td><td>POST</td>
+            </tr>
+            <tr>
+              <td class="routes">Required authentication</td>
+              <td>
+                
+                  <i class="icon-remove"></i>
+                
+              </td>
+            </tr>
+            <tr>
+              <td>Response formats</td><td>json</td>
+            </tr>
+          </table>
+
+
+           <h4 class="pad_top">Resource URL</h4>
+           <pre>/users(.:format)</pre>
+
+          <h4 class="pad_top">Response Status</h4>
+          <table class="table table-hover">
+            
+            <tr>
+              <td class="routes"><span class="label label-success">201</span></td>
+              <td>Created</td>
+            </tr>
+            
+            <tr>
+              <td class="routes"><span class="label label-warning">401</span></td>
+              <td>Access Denied</td>
+            </tr>
+            
+            <tr>
+              <td class="routes"><span class="label label-important">422</span></td>
+              <td>Unprocessable Entity</td>
+            </tr>
+            
+            <tr>
+              <td class="routes"><span class="label label-inverse">404</span></td>
+              <td>Not found</td>
+            </tr>
+            
+          </table>
+        </div>
+
+        
+        <div class="tab-pane my_tab" id="params">
+          <table class="table table-hover" id="table-params">
+            <tr><th>Name</th><th>Type</th><th>Description</th><th>Format</th></tr>
+            
+              <tr>
+                <td>
+                  <strong>name</strong></br>
+                  
+                    <span class="small">required</span>
+                  
+                </td>
+                <td>
+                  
+                    String
+                  
+                </td>
+                <td>User name.</td>
+                <td></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <strong>email</strong></br>
+                  
+                    <span class="small">required</span>
+                  
+                </td>
+                <td>
+                  
+                    String
+                  
+                </td>
+                <td>User email.</td>
+                <td></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <strong>password</strong></br>
+                  
+                    <span class="small">required</span>
+                  
+                </td>
+                <td>
+                  
+                    String
+                  
+                </td>
+                <td>User password. It will be required in loggin. Must be at least 8 caracters and be be safe.
+</td>
+                <td></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <strong>gender</strong></br>
+                  
+                    <span class="small">required</span>
+                  
+                </td>
+                <td>
+                  
+                    [ male, female ]
+                  
+                </td>
+                <td>User gender.</td>
+                <td></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <strong>phone</strong></br>
+                  
+                    <span class="small">optional</span>
+                  
+                </td>
+                <td>
+                  
+                    Number
+                  
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+            
+            <tr><td></td><td><td></td><td></td></tr>
+          </table>
+        </div>
+        
+
+        
+        <div class="tab-pane my_tab" id="errors">
+          <table class="table table-hover" id="table-errors">
+            <tr>
+              <th>Object</th>
+              <th>Message</th>
+              <th>Description</th>
+            </tr>
+            
+              <tr>
+                <td>password</td>
+                <td>too_short</td>
+                <td>Password must be at least 4 characters.</td>
+              </tr>
+            
+          </table>
+        </div>
+        
+
+        
+
+        
+      </div>
+
+      <script>
+        $(function () {
+          $('#myTab a:first').tab('show');
+        })
+
+        $('#myTab a').click(function (e) {
+          e.preventDefault();
+          $(this).tab('show');
+        })
+      </script>
+      <footer>
+        <p> </p>
+      </footer>
+    </div>
+  </body>
+</html>

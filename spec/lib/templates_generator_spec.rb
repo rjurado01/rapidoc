@@ -37,7 +37,7 @@ describe TemplatesGenerator do
       @resources.each do |resource|
         resource.actions_doc.each do |action_doc|
           if action_doc.has_controller_info
-            route = actions_dir + "/#{resource.name}_#{action_doc.action}.html"
+            route = actions_dir + "/#{resource.name}/#{action_doc.action}.html"
             File.exists?( route ).should == true
           end
         end
@@ -53,14 +53,15 @@ describe TemplatesGenerator do
       info = resource_info.group_by{ |entrie| entrie[:action] }['create'].first
       controller_info = extractor.get_action_info( 'create' )
       @action_doc = ActionDoc.new( info, controller_info, examples_dir )
-      
+
       create_action_template( get_action_template, @action_doc )
     end
 
     it "should create new action html file" do
-      route = actions_dir + "/#{@action_doc.resource}_#{@action_doc.action}.html"
+      route = actions_dir + "/#{@action_doc.resource}/#{@action_doc.action}.html"
       File.exists?( route ).should == true
     end
+
   end
 
   context "when call get_action_template function" do

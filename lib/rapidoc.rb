@@ -21,13 +21,29 @@ module Rapidoc
 
   METHODS = [ "GET", "PUT", "DELETE", "POST" ]
 
-  def create_structure
-    # should be done in this order
-    FileUtils.mkdir target_dir unless File.directory? target_dir
-    FileUtils.mkdir actions_dir unless File.directory? actions_dir
+  def create_config_structure
     FileUtils.cp_r GEM_CONFIG_DIR + "/.", config_dir unless File.directory? config_dir
-    FileUtils.cp_r GEM_ASSETS_DIR, target_dir
     FileUtils.mkdir examples_dir unless File.directory? examples_dir
+  end
+
+  def create_doc_structure
+    FileUtils.mkdir target_dir unless File.directory? target_dir
+    p target_dir
+    FileUtils.mkdir actions_dir unless File.directory? actions_dir
+    FileUtils.cp_r GEM_ASSETS_DIR, target_dir
+  end
+
+  def create_folders_for_file(file)
+    route_dir = file.split("/")
+    route_dir.pop
+    route_dir = route_dir.join("/")
+    FileUtils.mkdir route_dir unless File.directory? route_dir
+  end
+
+  def create_folders_for_files(files)
+    files.each do |file|
+      create_folders_for_file file
+    end
   end
 
   def remove_structure
@@ -54,7 +70,6 @@ module Rapidoc
 
   def generate_doc
     resources_doc = get_resources
-
     generate_index_template( resources_doc )
     generate_actions_templates( resources_doc )
   end

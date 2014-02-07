@@ -24,7 +24,7 @@ module Rapidoc
       @action           = routes_info[:action].to_s
       @action_method    = routes_info[:method].to_s || '-----'
       @urls             = routes_info[:urls]
-      @file             = @resource + '_' + @action
+      @file             = @resource + '/' + @action
 
       puts " - Generating #{@action} action documentation..." if trace?
 
@@ -51,7 +51,7 @@ module Rapidoc
     end
 
     def get_authentication( required_authentication )
-      if [ true, false ].include? required_authentication 
+      if [ true, false ].include? required_authentication
         required_authentication
       else
         default_authentication
@@ -76,7 +76,7 @@ module Rapidoc
     end
 
     def load_request( examples_route )
-      file = examples_route + '/' + @resource + '_' + @action + '_request.json'
+      file = examples_route + '/' + @resource + '/' + @action + '_request.json'
       return unless File.exists?( file )
       puts "  + Loading request examples..." if trace?
       File.open( file ){ |f| @example_req = JSON.pretty_generate( JSON.parse(f.read) ) }

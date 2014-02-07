@@ -6,15 +6,16 @@ describe ActionDoc do
 
   before :all do
     @json_info =  { "user" => { "name" => "Check", "apellido" => "Me" } }
-    response_file = examples_dir "users_create_response.json"
-    answer_file = examples_dir "users_create_request.json"
+    response_file = examples_dir "users/create_response.json"
+    answer_file = examples_dir "users/create_request.json"
 
     reset_structure
+    create_folders_for_files([response_file, answer_file])
     File.open( response_file, 'w') { |file| file.write @json_info.to_json }
     File.open( answer_file, 'w') { |file| file.write @json_info.to_json }
 
-    @info = { 
-      :resource=>"users", 
+    @info = {
+      :resource=>"users",
       :action=>"create",
       :method=>"POST",
       :urls=>["/users(.:format)"]
@@ -63,7 +64,7 @@ describe ActionDoc do
     end
 
     it "set correct file" do
-      @action_doc.file.should == @info[:resource].to_s + "_" + @info[:action].to_s
+      @action_doc.file.should == @info[:resource].to_s + "/" + @info[:action].to_s
     end
 
     it "set correct example_req" do
@@ -175,7 +176,7 @@ describe ActionDoc do
 
     context "when use config messages and descriptions" do
       before :all do
-        File.open( config_file_path, 'w') do |file| 
+        File.open( config_file_path, 'w') do |file|
           file.write "default_errors: true\n"
           file.write "errors:\n"
           file.write "  required:\n    message: \"m1\"\n    description: \"d1\"\n"

@@ -14,15 +14,15 @@ module Rapidoc
     #
     def extract_resource_info( lines, blocks, file_name )
       blocks ? info = [] : blocks = []
-
       blocks.each.map do |b|
         if lines[ b[:init] ].include? "=begin resource"
           n_lines = b[:end] - b[:init] - 1
-          
           begin
             info.push YAML.load( lines[ b[:init] +1, n_lines ].join.gsub(/\ *#/, '') )
-          rescue SyntaxError => e
+          rescue Psych::SyntaxError => e
             puts "Error parsing block in #{file_name} file [#{b[:init]} - #{b[:end]}]"
+          rescue => e
+            puts e
           end
         end
       end
@@ -44,7 +44,7 @@ module Rapidoc
       blocks.each do |b|
         if lines[ b[:init] ].include? "=begin action"
           n_lines = b[:end] - b[:init] - 1
-          
+
           begin
             info << YAML.load( lines[ b[:init] + 1, n_lines ].join.gsub(/\ *#/, '') )
           rescue Exception => e

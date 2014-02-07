@@ -8,7 +8,6 @@ module Rapidoc
     def generate_index_template( resources_doc )
       template = get_index_template
       result = template.call( :info => rapidoc_config, :resources => resources_doc )
-
       File.open( target_dir("index.html"), 'w' ) { |file| file.write result }
     end
 

@@ -22,7 +22,7 @@ module Rapidoc
       routes = Dir.chdir( ::Rails.root.to_s ) { `rake routes` }
 
       routes.split("\n").each do |entry|
-        routes_doc.add_route( entry )
+        routes_doc.add_route( entry ) unless entry.match(/URI/)
       end
 
       routes_doc

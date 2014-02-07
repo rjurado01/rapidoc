@@ -47,11 +47,6 @@ module Rapidoc
     def load_config
       if File.exists?( config_file_path )
         @@config = YAML.load( File.read( config_file_path ) )
-        resources_path = File.join( ::Rails.root.to_s, @@config["doc_route"].to_s )
-        dir_name = "#{resources_path}"
-        unless File.directory?(dir_name)
-          FileUtils.mkdir_p(dir_name)
-        end
       end
     end
 
@@ -85,7 +80,7 @@ module Rapidoc
       if File.exists?( config_file_path )
         form_file_name( target_dir_from_config, f )
       else
-        form_file_name( File.join( ::Rails.root.to_s, 'rapidoc' ), f )
+        form_file_name( File.join( ::Rails.root.to_s, 'public/docs' ), f )
       end
     end
 
@@ -115,9 +110,9 @@ module Rapidoc
 
     def target_dir_from_config
       if @@config and @@config.has_key?( "doc_route" )
-        File.join(::Rails.root.to_s, @@config['doc_route'] )
+        File.join(::Rails.root.to_s, "public/docs/#{@@config['doc_route']}" )
       else
-        File.join(::Rails.root.to_s, 'rapidoc' )
+        File.join(::Rails.root.to_s, 'public/docs' )
       end
     end
 

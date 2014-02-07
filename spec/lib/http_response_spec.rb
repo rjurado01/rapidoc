@@ -25,7 +25,7 @@ describe "When check HttpResponse class" do
   context "when check get_description function" do
     before do
       @codes = [ 200, 201, 401, 404, 422, 403, 409 ]
-      @descriptions = [ 'OK', 'Created', 'Unauthorized', 'Not found',
+      @descriptions = [ 'OK', 'Created', 'Access Denied', 'Not found',
                         'Unprocessable Entity', 'Forbidden', '' ]
     end
 

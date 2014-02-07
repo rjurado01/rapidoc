@@ -46,7 +46,7 @@ describe "Index page" do
         resource.actions_doc.each do |action|
           action.urls.each do |url|
             if action.has_controller_info
-              page.should have_link( url, href: "actions/" + action.file + ".html" )
+              page.should have_link( url, href: "actions/" + action.file.gsub('_','/') + ".html" )
             else
               page.should have_text( url )
             end

@@ -14,9 +14,10 @@ describe "Action page"  do
     reset_structure
 
     @json_info =  { "user" => { "name" => "Check", "apellido" => "Me" } }
-    request_file = examples_dir "users_create_request.json"
-    response_file = examples_dir "users_create_response.json"
+    request_file = examples_dir "users/create_request.json"
+    response_file = examples_dir "users/create_response.json"
 
+    create_folders_for_files([response_file, request_file])
     File.open( request_file, 'w') { |file| file.write @json_info.to_json }
     File.open( response_file, 'w') { |file| file.write @json_info.to_json }
 
@@ -34,7 +35,7 @@ describe "Action page"  do
 
   context "when visit users_index.html page" do
     before do
-      visit '/rapidoc/actions/users_index.html'
+      visit '/rapidoc/actions/users/index.html'
     end
 
     context "when check action page" do
@@ -95,7 +96,7 @@ describe "Action page"  do
 
       it "have table with one row for each parameter" do
         # +1 becouse rapidoc add empty row at the end
-        page.should have_css( "table#table-params tr", :count => @params_info.size + 1 )
+        page.should have_css( "table#table-params tr", :count => @params_info.size + 2 )
       end
 
       it "have a row with parameter name" do
@@ -140,7 +141,7 @@ describe "Action page"  do
 
   context "when visit users_create.html page" do
     before do
-      visit '/rapidoc/actions/users_create.html'
+      visit '/rapidoc/actions/users/create.html'
     end
 
     context "when check tab 'Params'" do

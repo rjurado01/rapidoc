@@ -29,7 +29,7 @@ describe ResourceDoc do
     end
 
     it "returns name without '/'" do
-      @rdoc.simple_name.should == "OneTwo"
+      @rdoc.simple_name.should == "Two"
     end
   end
 
