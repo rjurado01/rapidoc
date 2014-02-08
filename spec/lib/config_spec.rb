@@ -50,7 +50,7 @@ describe Rapidoc::Config do
       it "controller_dir returns correct dir" do
         File.open( config_file_path, 'w') { |file| file.write "controllers_route: \"vim\"" }
         load_config
-        controller_dir().should eql( ::Rails.root.to_s + '/vim' )
+        controller_dir().should eq("#{::Rails.root}/vim" )
       end
     end
   end
@@ -63,7 +63,7 @@ describe Rapidoc::Config do
       end
 
       it "returns correct route" do
-        target_dir.should ==  ::Rails.root.to_s + "/vim"
+        target_dir.should eq("#{::Rails.root.to_s}/public/docs/vim")
       end
     end
 
@@ -74,7 +74,7 @@ describe Rapidoc::Config do
       end
 
       it "returns default route" do
-        target_dir.should == ::Rails.root.to_s + "/rapidoc"
+        target_dir.should  eq("#{::Rails.root}/public/docs")
       end
     end
 
@@ -128,7 +128,7 @@ describe Rapidoc::Config do
       end
 
       it "returns correct route" do
-        actions_dir.should ==  ::Rails.root.to_s + "/vim/actions"
+        actions_dir.should eq("#{::Rails.root}/public/docs/vim/actions")
       end
     end
 
@@ -139,7 +139,7 @@ describe Rapidoc::Config do
       end
 
       it "returns default route" do
-        actions_dir.should == ::Rails.root.to_s + "/rapidoc/actions"
+        actions_dir.should eq("#{::Rails.root.to_s}/public/docs/actions")
       end
     end
 
@@ -166,7 +166,7 @@ describe Rapidoc::Config do
     end
     context "when config file hasn't an example dir" do
       before do
-        File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }   
+        File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }
         load_config
       end
 
@@ -189,7 +189,7 @@ describe Rapidoc::Config do
 
     context "when config file has not resources_black_list" do
       it "returns empty array" do
-        File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }   
+        File.open("#{config_dir}/rapidoc.yml", 'w') { |file| file.write "" }
         load_config
         resources_black_list.should == []
       end

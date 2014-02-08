@@ -28,8 +28,8 @@ describe Rapidoc do
     end
     context "with a diferent doc_route" do
       before do
+        File.open( config_file_path, 'w') { |file| file.write "doc_route: api/v1" }
         load_config
-        @@config['doc_route'] = "api/v1"
         create_doc_structure
         generate_doc
       end

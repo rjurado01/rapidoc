@@ -1,0 +1,43 @@
+.routes {
+  width: 20%
+}
+
+.footer {
+  padding-top: 20px
+}
+
+.my_tab {
+  line-height: 160%;
+  padding: 10px;
+}
+
+.pad_top {
+  padding-top: 20px;
+}
+
+.pad-bot {
+  padding-bottom: 14px;
+}
+
+.pad-description {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.small {
+  display: block;
+  color: #999;
+  font-size: 90%;
+}
+
+.action-options {
+  margin-top: 25px;
+}
+
+.label-info2 {
+  background-color: #4D657D
+}
+
+.label-warning2 {
+  background-color: #FE642E
+}

@@ -60,7 +60,8 @@ module Rapidoc
 
   def reset_structure
     remove_structure
-    create_structure
+    create_config_structure
+    create_doc_structure
   end
 
   def remove_examples

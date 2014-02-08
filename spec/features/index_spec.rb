@@ -17,7 +17,7 @@ describe "Index page" do
   end
 
   before do
-    visit '/rapidoc/index.html'
+    visit '/public/docs/index.html'
   end
 
   after :all do

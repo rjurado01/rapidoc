@@ -33,9 +33,9 @@ describe "Action page"  do
     remove_examples
   end
 
-  context "when visit users_index.html page" do
+  context "when visit users/index.html page" do
     before do
-      visit '/rapidoc/actions/users/index.html'
+      visit '/public/docs/actions/users/index.html'
     end
 
     context "when check action page" do
@@ -139,9 +139,9 @@ describe "Action page"  do
     end
   end
 
-  context "when visit users_create.html page" do
+  context "when visit users/create.html page" do
     before do
-      visit '/rapidoc/actions/users/create.html'
+      visit '/public/docs/actions/users/create.html'
     end
 
     context "when check tab 'Params'" do

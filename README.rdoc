@@ -1,6 +1,6 @@
 = Rapidoc
 
-REST API documentation generator for rails projects ( 0.06 version ).
+REST API documentation generator for rails projects ( 0.07 version ).
 
 This gem let you generate API documentation of your rails project in html format.
 It uses routes information, rapidoc comments and json examples for generate
@@ -9,17 +9,21 @@ _bootstrap_.
 
 This is how the web interface look like: example[http://drinor.github.io/rapidoc/index.html]
 
-Rapidoc is based in restapi_doc[https://github.com/Alayho/restapi_doc] gem.
+Rapidoc Koombea is refactor of rapidoc[https://github.com/drinor/rapidoc] gem.
 
 == Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'rapidoc'
+    gem 'rapidoc', git: "https://your_oauth_github_token:x-oauth-basic@github.com/koombea/rapidoc.git"
 
-And then execute:
+Then execute:
 
     $ bundle
+
+And finally, run:
+
+    rake rapidoc:install
 
 == Usage
 
