@@ -27,9 +27,8 @@ module Rapidoc
   end
 
   def create_doc_structure
-    FileUtils.mkdir target_dir unless File.directory? target_dir
-    p target_dir
-    FileUtils.mkdir actions_dir unless File.directory? actions_dir
+    FileUtils.mkdir_p target_dir unless File.directory? target_dir
+    FileUtils.mkdir_p actions_dir unless File.directory? actions_dir
     FileUtils.cp_r GEM_ASSETS_DIR, target_dir
   end
 
@@ -56,7 +55,7 @@ module Rapidoc
   end
 
   def remove_doc
-    FileUtils.rm_r target_dir if File.directory? target_dir
+    FileUtils.rm_r "#{::Rails.root}/public/docs" if File.directory? "#{::Rails.root}/public/docs"
   end
 
   def reset_structure
