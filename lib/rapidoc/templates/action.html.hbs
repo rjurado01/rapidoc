@@ -47,6 +47,7 @@
       <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#home">Home</a></li>
         {{#if action.params}}<li><a href="#params">Params</a></li>{{/if}}
+        {{#if action.headers}}<li><a href="#headers">Headers</a></li>{{/if}}
         {{#if action.errors}}<li><a href="#errors">Errors</a></li>{{/if}}
         {{#if action.example_req}}<li><a href="#request">Request</a></li>{{/if}}
         {{#if action.example_res}}<li><a href="#response">Response</a></li>{{/if}}
@@ -120,6 +121,24 @@
               </tr>
             {{/each}}
             <tr><td></td><td><td></td><td></td></tr>
+          </table>
+        </div>
+        {{/if}}
+
+        {{#if action.headers}}
+        <div class="tab-pane my_tab" id="headers">
+          <table class="table table-hover" id="table-headers">
+            <tr><th>Name</th><th>Description</th></tr>
+            {{#each action.headers}}
+              <tr>
+                <td>
+                  <strong>{{this.name}}</strong></br>
+                  <span class="small">required</span>
+                </td>
+                <td>{{this.description}}</td>
+              </tr>
+            {{/each}}
+            <tr><td></td><td><td></tr>
           </table>
         </div>
         {{/if}}

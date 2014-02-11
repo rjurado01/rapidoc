@@ -10,7 +10,7 @@ module Rapidoc
   #
   class ActionDoc
     attr_reader :resource, :urls, :action, :action_method, :description,
-      :response_formats, :authentication, :params, :file, :http_responses,
+      :response_formats, :authentication, :params, :headers, :file, :http_responses,
       :errors, :example_res, :example_req, :resource_name
 
     ##
@@ -44,6 +44,7 @@ module Rapidoc
       @description      = controller_info["description"]
       @response_formats = default_response_formats || controller_info["response_formats"]
       @params           = controller_info["params"]
+      @headers          = controller_info["headers"]
       @http_responses   = get_http_responses controller_info["http_responses"]
       @errors           = controller_info["errors"] ? controller_info["errors"].dup : []
       @authentication   = get_authentication controller_info["authentication_required"]
