@@ -27,6 +27,7 @@ describe ActionDoc do
 
   after :all do
     remove_examples
+    remove_structure
   end
 
   context "when initialize ActionDoc" do

@@ -9,7 +9,9 @@ describe ControllerExtractor do
       @extractor = ControllerExtractor.new "users_controller.rb"
     end
 
-    context
+    after :all do
+      remove_structure
+    end
 
     context "when call get_actions_info function" do
       before :all do
@@ -85,6 +87,7 @@ describe ControllerExtractor do
 
     context "when use custom controllers route" do
       it "use .yml extension for controllers files" do
+        create_config_structure
         File.open( config_file_path, 'w') { |file| file.write "controllers_route: \"vim\"" }
         load_config
 

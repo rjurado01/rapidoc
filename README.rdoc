@@ -9,13 +9,13 @@ _bootstrap_.
 
 This is how the web interface look like: example[http://drinor.github.io/rapidoc/index.html]
 
-Rapidoc Koombea is refactor of rapidoc[https://github.com/drinor/rapidoc] gem.
+Rapidoc is based in restapi_doc[https://github.com/Alayho/restapi_doc] gem.
 
 == Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'rapidoc', git: "https://your_oauth_github_token:x-oauth-basic@github.com/koombea/rapidoc.git"
+    gem 'rapidoc'
 
 Then execute:
 
@@ -132,6 +132,11 @@ For more details and options please visit the Wiki[https://github.com/drinor/rap
 * Trace mode ( configuration[https://github.com/drinor/rapidoc/wiki/Configuration] ).
 
 * Simple and intuitive navigation.
+
+== Contributors
+
+* harchs[https://github.com/harchs] 
+* ljrzarate[https://github.com/ljrzarate]
 
 == Contributing
 

@@ -13,8 +13,8 @@ def capture_stdout(&block)
 end
 
 describe Rake do
-  before do
-    load File.expand_path("../../../lib/tasks/rapidoc.rake", __FILE__)
+  before :all do
+    Rake.application.rake_require "tasks/rapidoc"
     Rake::Task.define_task(:environment)
   end
 
@@ -37,12 +37,16 @@ describe Rake do
     before do
       install_task
     end
+
     after :all do
       remove_structure
     end
-    it { File.directory?("#{::Rails.root}/config/rapidoc").should be_true }
-    it { File.directory?("#{::Rails.root}/config/rapidoc/examples").should be_true }
-    it { File.exists?( "#{::Rails.root}/config/rapidoc/rapidoc.yml" ).should be_true }
+
+    it "create directory and files" do
+      File.directory?("#{::Rails.root}/config/rapidoc").should be_true
+      File.directory?("#{::Rails.root}/config/rapidoc/examples").should be_true
+      File.exists?( "#{::Rails.root}/config/rapidoc/rapidoc.yml" ).should be_true
+    end
   end
 
   context 'rapidoc:generate' do
@@ -50,9 +54,11 @@ describe Rake do
       before do
         install_task
       end
+
       after :all do
         remove_structure
       end
+
       it "create documentation" do
         output = capture_stdout { generate_task }
         output.should be_include( 'Generating API documentation...' )
@@ -60,11 +66,13 @@ describe Rake do
         File.exists?( "#{::Rails.root}/public/docs/index.html" ).should be_true
       end
     end
+
     context "when rapidoc is not installed" do
       after :all do
         remove_structure
       end
-      it "create documentation" do
+
+      it "show a message with information" do
         output = capture_stdout { generate_task }
         output.should be_include( 'Need install rapidoc for run it, for install run rapidoc:install task' )
         File.exists?( "#{::Rails.root}/public/docs/index.html" ).should be_false
@@ -75,14 +83,18 @@ describe Rake do
   context "rapidoc:clean" do
     before do
       install_task
-      generate_task
+      capture_stdout { generate_task }
       clean_task
     end
+
     after :all do
       remove_structure
     end
-    it { File.directory?("#{::Rails.root}/public/docs").should be_false }
-    it { File.directory?("#{::Rails.root}/config/rapidoc").should be_true }
-    it { File.exists?( "#{::Rails.root}/config/rapidoc/rapidoc.yml" ).should be_true }
+
+    it "remove docs files" do
+      File.directory?("#{::Rails.root}/public/docs").should be_false
+      File.directory?("#{::Rails.root}/config/rapidoc").should be_true
+      File.exists?( "#{::Rails.root}/config/rapidoc/rapidoc.yml" ).should be_true
+    end
   end
 end

@@ -87,11 +87,17 @@ describe Rapidoc::ResourcesExtractor do
 
     context "when config has resources_black_list" do
       before do
+        create_config_structure
+
         File.open("#{config_dir}/rapidoc.yml", 'w') do |file|
           file.write "resources_black_list: images, albums"
         end
 
         load_config
+      end
+
+      after :all do
+        remove_config
       end
 
       it "returns correct resources names" do

@@ -7,6 +7,10 @@ describe Rapidoc::Config do
     reset_structure
   end
 
+  after :all do
+    remove_structure
+  end
+
   it "config_dir returns correct dir" do
     config_dir().should eql( ::Rails.root.to_s + '/config/rapidoc' )
   end

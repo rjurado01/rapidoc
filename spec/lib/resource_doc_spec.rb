@@ -10,6 +10,10 @@ describe ResourceDoc do
     @routes_actions_info = get_routes_doc.get_actions_route_info( :users )
   end
 
+  after :all do
+    remove_structure
+  end
+
   context "when create new valid instance only with resource name" do
     before do
       @resource_name = "users"

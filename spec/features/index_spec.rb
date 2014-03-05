@@ -21,7 +21,7 @@ describe "Index page" do
   end
 
   after :all do
-    #remove_doc
+   remove_structure
   end
 
   context "when check global page" do

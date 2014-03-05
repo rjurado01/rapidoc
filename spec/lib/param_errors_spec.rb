@@ -31,6 +31,7 @@ describe ParamErrors do
 
   context "when use config messaes and descriptions" do
     before :all do
+      create_config_structure
 
       File.open( config_file_path, 'w') do |file| 
         file.write "default_errors: true\n"
@@ -40,6 +41,10 @@ describe ParamErrors do
       end
 
       load_config
+    end
+
+    after :all do
+      remove_config
     end
 
     context "when call get_required_error_info" do

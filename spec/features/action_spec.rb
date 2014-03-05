@@ -29,7 +29,7 @@ describe "Action page"  do
   end
 
   after :all do
-    remove_doc
+    remove_structure
     remove_examples
   end
 

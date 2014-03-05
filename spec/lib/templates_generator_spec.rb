@@ -10,7 +10,7 @@ describe TemplatesGenerator do
   end
 
   after do
-    #remove_doc
+    remove_structure
   end
 
   context "when call generate_index_template" do
