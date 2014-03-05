@@ -11,7 +11,7 @@ module Rapidoc
   class ActionDoc
     attr_reader :resource, :urls, :action, :action_method, :description,
       :response_formats, :authentication, :params, :file, :http_responses,
-      :errors, :example_res, :example_req
+      :errors, :example_res, :example_req, :resource_name
 
     ##
     # @param resource [String] resource name
@@ -19,6 +19,7 @@ module Rapidoc
     # @param urls [Array] all urls that call this method
     #
     def initialize( routes_info, controller_info, examples_route )
+      @resource_name    = routes_info[:resource].split('/').last
       @resource         = routes_info[:resource].to_s
       @action           = routes_info[:action].to_s
       @action_method    = routes_info[:method].to_s || '-----'
